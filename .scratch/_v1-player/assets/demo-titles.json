@@ -1,0 +1,53 @@
+{
+ "description": "Original demo titles bundled with Home Cinema; each title has three layers for the 3D poster",
+ "titles": [
+  {
+   "id": "harbor",
+   "poster": "poster-harbor.svg",
+   "backdrop": "backdrop-harbor.svg",
+   "logo": "logo-harbor.svg"
+  },
+  {
+   "id": "moon",
+   "poster": "poster-moon.svg",
+   "backdrop": "backdrop-moon.svg",
+   "logo": "logo-moon.svg"
+  },
+  {
+   "id": "orchard",
+   "poster": "poster-orchard.svg",
+   "backdrop": "backdrop-orchard.svg",
+   "logo": "logo-orchard.svg"
+  },
+  {
+   "id": "vega",
+   "poster": "poster-vega.svg",
+   "backdrop": "backdrop-vega.svg",
+   "logo": "logo-vega.svg"
+  },
+  {
+   "id": "relay",
+   "poster": "poster-relay.svg",
+   "backdrop": "backdrop-relay.svg",
+   "logo": "logo-relay.svg"
+  },
+  {
+   "id": "rain",
+   "poster": "poster-rain.svg",
+   "backdrop": "backdrop-rain.svg",
+   "logo": "logo-rain.svg"
+  },
+  {
+   "id": "kite",
+   "poster": "poster-kite.svg",
+   "backdrop": "backdrop-kite.svg",
+   "logo": "logo-kite.svg"
+  },
+  {
+   "id": "keepers",
+   "poster": "poster-keepers.svg",
+   "backdrop": "backdrop-keepers.svg",
+   "logo": "logo-keepers.svg"
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:name=".platform.SpatialApplication"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HomeCinema"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".platform.LaunchActivity"
+            android:exported="true"
+            android:theme="@style/Theme.HomeCinema">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- The cinema frame: a transparent Volume in Shared Space (design surface frame-volume).
+                 No Stage: Stage forces Full Space, which hides the other app's player (feasibility.md). -->
+            <meta-data android:name="pico.spatial.windowcontainer.id" android:value="CinemaFrame" />
+            <!-- 2 = Form.Volumetric -->
+            <meta-data android:name="pico.spatial.windowcontainer.style" android:value="2" />
+            <!-- design 3.4 x 2.0 x 0.6 m; the system clamps a volume to ~2.16 m wide (emulator 6.3 log: half 1.080 x 1.000),
+                 so ask for the same 1.7:1 shape at that width; the model is fitted to the real size at runtime -->
+            <meta-data android:name="pico.spatial.windowcontainer.defaultsize" android:value="2.16x1.27x0.6" />
+            <meta-data android:name="pico.spatial.windowcontainer.defaultsize.unit" android:value="meters" />
+            <meta-data android:name="pico.spatial.windowcontainer.resizetype" android:value="0" />
+            <!-- 1 = UniformResizable: the 16:9 opening keeps its shape (A7) -->
+            <meta-data android:name="pico.spatial.windowcontainer.resizerestriction" android:value="1" />
+            <!-- 1 = WorldScale.Dynamic, same as the system's planar player windows, so an aligned frame stays aligned -->
+            <meta-data android:name="pico.spatial.windowcontainer.worldscaletype" android:value="1" />
+            <meta-data android:name="pico.spatial.windowcontainer.captionbar" android:value="0" />
+            <!-- transparent: no material background, no base panel -->
+            <meta-data android:name="pico.spatial.windowcontainer.materialbackground" android:value="0" />
+            <meta-data android:name="pico.spatial.windowcontainer.volumealignment" android:value="0" />
+            <meta-data android:name="pico.spatial.windowcontainer.volumebasepanel" android:value="1" />
+        </activity>
+    </application>
+
+</manifest>

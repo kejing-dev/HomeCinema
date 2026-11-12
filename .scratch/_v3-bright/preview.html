@@ -1,0 +1,187 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Cinema · Cinema Frame · Design Preview</title><link rel="stylesheet" href="runtime/tokens.css"><script src="runtime/components.js" defer></script><style>
+html,body{margin:0;font-family:system-ui,-apple-system,"PingFang SC","Noto Sans CJK SC",sans-serif}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+#pv-bar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:10px 24px;background:#2b2b2e;color:#ddd;font-size:13px}
+#pv-bar b{color:#fff;margin-right:4px}
+#pv-bar .grp{display:flex;gap:4px;align-items:center}
+#pv-bar button{background:#444;border:0;color:#fff;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px}
+#pv-bar button[aria-pressed=true]{background:#3377ff}
+#pv-note{font-size:12px;color:#aaa;padding:6px 24px;background:#333}
+.pv-still *{transition:none!important}
+/* Preview scenery: the real room seen through passthrough (not drawn by the app) */
+#pv-stage{--z:.5}
+#pv-room{position:relative;zoom:var(--z);width:3240px;height:1800px;background:linear-gradient(#7a7168 0 70%,#5a4636 70% 100%);overflow:hidden}
+#pv-room-label{position:absolute;left:40px;top:28px;font-size:28px;color:#d8d0c6}
+/* Other app's player window — not part of Home Cinema */
+#pv-player{position:absolute;left:795px;top:595px;width:1120px;height:630px;border-radius:28px;overflow:hidden;background:linear-gradient(#203a5c,#d9895a 55%,#2a1e2c);box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:1}
+#pv-player .pv-sun{position:absolute;left:61%;top:42%;width:110px;height:110px;border-radius:50%;background:#f6d38a}
+#pv-player .pv-hill{position:absolute;left:-10%;right:-10%;bottom:-38%;height:70%;border-radius:50%;background:#1c1a26}
+#pv-player .pv-ctl{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:620px;height:52px;border-radius:26px;background:rgba(225,225,225,.82);display:flex;align-items:center;gap:20px;padding:0 24px;font-size:20px;color:#222}
+#pv-player .pv-ctl i{flex:1;height:5px;border-radius:3px;background:linear-gradient(90deg,#111 38%,#888 38%)}
+#pv-player .pv-tag{position:absolute;left:20px;top:16px;font-size:20px;color:#fff;background:rgba(0,0,0,.45);padding:5px 12px;border-radius:10px}
+/* Our Volume: real renders of the frame GLB (transparent cut-outs, 750 dp per model metre) */
+#frame-volume{position:absolute;left:80px;top:160px;z-index:2}
+#vol-root{position:absolute;inset:0;pointer-events:none}
+#frame-model{position:absolute;inset:0}
+.frame-art{position:absolute;left:0;top:0;width:2550px;height:1500px;transition:opacity var(--t,1s) ease}
+#frame-volume[data-show=up]{--dim:0;--t:1.2s}
+#frame-volume[data-show=opening]{--dim:.6;--t:4s}
+#frame-volume[data-show=showing]{--dim:1;--t:4s}
+#frame-volume[data-show=closing]{--dim:.3;--t:6s}
+#frame-art-dim{opacity:var(--dim)}
+#align-outline{position:absolute;left:675px;top:412px;width:1200px;height:676px;border:8px dashed #3d8bff;border-radius:10px;display:none;box-shadow:0 0 40px 8px rgba(61,139,255,.45)}
+#frame-volume[data-align=on] #align-outline{display:block}
+.pv-handle{position:absolute;width:90px;height:90px;border:12px solid rgba(255,255,255,.9);display:none}
+#frame-volume[data-align=on] .pv-handle{display:block}
+#pv-h-tl{left:-6px;top:-6px;border-right:0;border-bottom:0;border-radius:40px 0 0 0}
+#pv-h-tr{right:-6px;top:-6px;border-left:0;border-bottom:0;border-radius:0 40px 0 0}
+#pv-h-bl{left:-6px;bottom:-6px;border-right:0;border-top:0;border-radius:0 0 0 40px}
+#pv-h-br{right:-6px;bottom:-6px;border-left:0;border-top:0;border-radius:0 0 40px 0}
+#align-panel{position:absolute;left:955px;top:1120px;pointer-events:auto}
+.align-body{width:640px;display:flex;flex-direction:column;gap:12px;padding:24px}
+.align-steps{display:flex;flex-direction:column;gap:6px}
+.align-actions{display:flex;justify-content:flex-end;gap:8px}
+/* Controls window */
+#controls-window{position:absolute;left:2690px;top:940px;width:480px;height:720px;z-index:3}
+#ctl-root{display:flex;flex-direction:column;gap:16px;padding:24px;height:100%}
+.ctl-head{display:flex;align-items:center;gap:12px}
+.ctl-head-copy{display:flex;flex-direction:column;gap:2px;flex:1}
+.ctl-page{display:flex;flex-direction:column;gap:14px;flex:1;min-height:0}
+.style-grid{display:grid;grid-template-columns:repeat(3,136px);gap:12px}
+.style-card{width:136px;display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:16px;background:var(--fill-light-alpha);cursor:pointer;outline:none}
+.style-card[aria-pressed=true]{box-shadow:inset 0 0 0 3px var(--semantic-interaction)}
+.style-img{width:120px;height:75px;border-radius:10px;display:block;object-fit:cover}
+.show-row{display:flex;flex-direction:column;gap:8px}
+.set-list{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;overflow:auto}
+.exit-row{display:flex;justify-content:flex-end}
+</style></head><body>
+<div id="pv-bar">
+ <span class="grp"><b>Language</b><button data-pv-lang="en" aria-pressed="true">English</button><button data-pv-lang="zh" aria-pressed="false">中文</button></span>
+ <span class="grp"><b>Style</b><button data-pv-style="gallery" aria-pressed="true">Gallery</button><button data-pv-style="neon" aria-pressed="false">Neon</button><button data-pv-style="wa" aria-pressed="false">Washi</button><button data-pv-style="portal" aria-pressed="false">Portal</button><button data-pv-style="moss" aria-pressed="false">Moss</button><button data-pv-style="cosmos" aria-pressed="false">Cosmos</button></span>
+ <span class="grp"><b>Show</b><button data-pv-show="up" aria-pressed="true">Lights up</button><button data-pv-show="opening" aria-pressed="false">Opening</button><button data-pv-show="showing" aria-pressed="false">Showing</button><button data-pv-show="closing" aria-pressed="false">Closing</button></span>
+ <span class="grp"><b>Mode</b><button data-pv-align="off" aria-pressed="true">Normal</button><button data-pv-align="on" aria-pressed="false">Align</button></span>
+ <span class="grp"><b>Panel</b><button data-pv-page="show" aria-pressed="true">Show</button><button data-pv-page="settings" aria-pressed="false">Settings</button></span>
+ <span class="grp"><b>Zoom</b><button data-pv-zoom=".5" aria-pressed="true">50%</button><button data-pv-zoom="1" aria-pressed="false">100%</button></span>
+</div>
+<div id="pv-note">Preview only: the wall and floor stand for passthrough (Home Cinema cannot dim them). The sunset window is ANOTHER app's player, not ours. The frame is a real render of the style's GLB, lights-up and showing variants cross-faded.</div>
+<sui-preview-stage id="pv-stage">
+<div id="pv-room">
+ <div id="pv-room-label">Real room (passthrough, brightness unchanged)</div>
+ <div id="pv-player"><div class="pv-sun"></div><div class="pv-hill"></div><div class="pv-tag">Other app · PICO Video</div><div class="pv-ctl">◀◀ ❚❚ ▶▶<i></i>42:10</div></div>
+
+ <sui-volume id="frame-volume" width="2550" height="1500" depth="450" data-style="gallery" data-show="up" data-align="off">
+  <div id="vol-root">
+   <div id="frame-model">
+    <img id="frame-art-up" class="frame-art" src="assets/frame-gallery-up.png" alt=""
+      data-src-gallery="assets/frame-gallery-up.png" data-src-neon="assets/frame-neon-up.png" data-src-wa="assets/frame-wa-up.png" data-src-portal="assets/frame-portal-up.png" data-src-moss="assets/frame-moss-up.png" data-src-cosmos="assets/frame-cosmos-up.png">
+    <img id="frame-art-dim" class="frame-art" src="assets/frame-gallery-showing.png" alt=""
+      data-src-gallery="assets/frame-gallery-showing.png" data-src-neon="assets/frame-neon-showing.png" data-src-wa="assets/frame-wa-showing.png" data-src-portal="assets/frame-portal-showing.png" data-src-moss="assets/frame-moss-showing.png" data-src-cosmos="assets/frame-cosmos-showing.png">
+    <div id="align-outline"></div>
+   </div>
+   <sui-attachment-panel id="align-panel" background="material" hidden>
+    <div id="align-body" class="align-body">
+     <sui-text id="align-title" data-t-text="align.title" text="Fit your player into the frame" text-style="titleLarge"></sui-text>
+     <div id="align-steps" class="align-steps">
+      <sui-text id="align-step1" data-t-text="align.s1" text="1  Drag your player window into the opening." text-style="bodyMedium"></sui-text>
+      <sui-text id="align-step2" data-t-text="align.s2" text="2  Drag a corner of this frame to resize it. It keeps its shape." text-style="bodyMedium"></sui-text>
+      <sui-text id="align-note" data-t-text="align.note" text="Home Cinema can't see other apps' windows, so this is done by hand once." text-style="bodySmall" color="var(--label-semidark-alpha)"></sui-text>
+     </div>
+     <div id="align-actions" class="align-actions">
+      <sui-button id="align-done" data-t-text="align.done" text="Done" leading-icon="ic_check" size="regular"></sui-button>
+     </div>
+    </div>
+   </sui-attachment-panel>
+  </div>
+  <div id="pv-h-tl" class="pv-handle"></div><div id="pv-h-tr" class="pv-handle"></div><div id="pv-h-bl" class="pv-handle"></div><div id="pv-h-br" class="pv-handle"></div>
+ </sui-volume>
+
+ <sui-planar-window id="controls-window">
+  <div id="ctl-root">
+   <div id="ctl-head" class="ctl-head">
+    <img id="ctl-icon" src="assets/app-icon.svg" width="48" height="48" alt="" style="border-radius:12px">
+    <div id="ctl-head-copy" class="ctl-head-copy">
+     <sui-text id="ctl-title" data-t-text="app.name" text="Home Cinema" text-style="titleLarge"></sui-text>
+     <sui-text id="ctl-status" data-t-text="status.up" text="Lights up · waiting for sound" text-style="bodySmall" color="var(--label-semidark-alpha)"></sui-text>
+    </div>
+   </div>
+   <sui-segment-control id="ctl-tabs" style="width:432px" options="Show,Settings" data-t-options="tabs" selected-index="0"></sui-segment-control>
+
+   <div id="page-show" class="ctl-page">
+    <sui-text id="style-label" data-t-text="style.label" text="Frame style" text-style="titleSmall"></sui-text>
+    <div id="style-grid" class="style-grid">
+     <div id="style-gallery" class="style-card" role="button" tabindex="0" aria-pressed="true" data-style="gallery"><img id="style-gallery-img" class="style-img" src="assets/style-gallery.jpg" alt=""><sui-text id="style-gallery-name" data-t-text="st.gallery" text="Gallery" text-style="labelLarge"></sui-text></div>
+     <div id="style-neon" class="style-card" role="button" tabindex="0" aria-pressed="false" data-style="neon"><img id="style-neon-img" class="style-img" src="assets/style-neon.jpg" alt=""><sui-text id="style-neon-name" data-t-text="st.neon" text="Neon Night" text-style="labelLarge"></sui-text></div>
+     <div id="style-wa" class="style-card" role="button" tabindex="0" aria-pressed="false" data-style="wa"><img id="style-wa-img" class="style-img" src="assets/style-wa.jpg" alt=""><sui-text id="style-wa-name" data-t-text="st.wa" text="Washi &amp; Wood" text-style="labelLarge"></sui-text></div>
+     <div id="style-portal" class="style-card" role="button" tabindex="0" aria-pressed="false" data-style="portal"><img id="style-portal-img" class="style-img" src="assets/style-portal.jpg" alt=""><sui-text id="style-portal-name" data-t-text="st.portal" text="Holo Portal" text-style="labelLarge"></sui-text></div>
+     <div id="style-moss" class="style-card" role="button" tabindex="0" aria-pressed="false" data-style="moss"><img id="style-moss-img" class="style-img" src="assets/style-moss.jpg" alt=""><sui-text id="style-moss-name" data-t-text="st.moss" text="Moss &amp; Stone" text-style="labelLarge"></sui-text></div>
+     <div id="style-cosmos" class="style-card" role="button" tabindex="0" aria-pressed="false" data-style="cosmos"><img id="style-cosmos-img" class="style-img" src="assets/style-cosmos.jpg" alt=""><sui-text id="style-cosmos-name" data-t-text="st.cosmos" text="Cosmos" text-style="labelLarge"></sui-text></div>
+    </div>
+    <sui-text id="style-desc" data-t-text="sd.gallery" text="Warm LED reveal · quiet room tone" text-style="bodySmall" color="var(--label-semidark-alpha)"></sui-text>
+    <div id="show-row" class="show-row">
+     <sui-button id="show-toggle" data-t-text="show.start" text="Start the show" leading-icon="ic_play" size="regular" style="width:100%"></sui-button>
+     <sui-list-item id="auto-item" custom-width="432" content-padding="12" leading-icon="ic_volume_high" data-t-headline="auto.h" headline="Start with the sound" data-t-supporting="auto.s" supporting="Frame lights dim when your player makes sound and come back after 8 s of silence">
+      <sui-switch id="auto-switch" slot="trailing" checked></sui-switch>
+     </sui-list-item>
+    </div>
+    <sui-button id="align-btn" data-t-text="align.open" text="Align frame to player" leading-icon="ic_expand" size="regular" container-color="var(--fill-neutral-alpha)" content-color="var(--label-darkest-alpha)" style="width:100%"></sui-button>
+   </div>
+
+   <div id="page-settings" class="ctl-page" hidden>
+    <div id="set-list" class="set-list">
+     <sui-list-item id="timer-item" custom-width="432" content-padding="12" leading-icon="ic_playback_timer_fill" data-t-headline="timer.h" headline="Sleep timer" data-t-supporting="timer.s" supporting="When it ends the frame lights come back and sound fades. Your player keeps playing."></sui-list-item>
+     <sui-segment-control id="timer-seg" style="width:432px" options="Off,60 min,90 min,120 min" data-t-options="timer.opts" selected-index="0"></sui-segment-control>
+     <sui-list-item id="sound-item" custom-width="432" content-padding="12" leading-icon="ic_film" data-t-headline="sound.h" headline="Style ambience sound" data-t-supporting="sound.s" supporting="Each style has its own: room tone, city rain, roof rain, synth pad, forest stream, space drone">
+      <sui-switch id="sound-switch" slot="trailing"></sui-switch>
+     </sui-list-item>
+     <sui-slider id="sound-vol" value="0.3" width="432" semantic-label="Ambience volume"></sui-slider>
+     <sui-list-item id="lang-item" custom-width="432" content-padding="12" leading-icon="ic_globe" data-t-headline="lang.h" headline="Language">
+      <sui-button id="lang-btn" slot="trailing" size="small" data-t-text="lang.sys" text="Follow system" trailing-icon="ic_arrow_down"></sui-button>
+     </sui-list-item>
+     <sui-text id="limits-note" data-t-text="limits" text="Home Cinema decorates around your player. It can't dim the room or control other apps." text-style="bodySmall" color="var(--label-semidark-alpha)"></sui-text>
+    </div>
+    <div id="exit-row" class="exit-row">
+     <sui-button id="exit-btn" data-t-text="exit" text="Exit Home Cinema" leading-icon="ic_arrow_exit_door" size="regular"></sui-button>
+    </div>
+   </div>
+  </div>
+ </sui-planar-window>
+</div>
+<sui-menu id="lang-menu" for="lang-btn" hidden>
+ <sui-menu-item id="lang-sys" data-t-title="lang.sys" title="Follow system" data-lang="sys"></sui-menu-item>
+ <sui-menu-item id="lang-zh" data-t-title="lang.zh" title="简体中文" data-lang="zh"></sui-menu-item>
+ <sui-menu-item id="lang-en" data-t-title="lang.en" title="English" data-lang="en"></sui-menu-item>
+</sui-menu>
+</sui-preview-stage>
+
+<script type="application/json" id="scene-design-notes">
+{
+ "frame-model": {
+  "represents": "The selected frame style as one 3D model (GLB, metres) filling the Volume around a 1.6 x 0.9 m hollow 16:9 opening; six styles: Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos",
+  "previewRepresentation": "Transparent orthographic renders of the actual GLB (lights-up and showing variants), cross-faded by show state",
+  "assetStatus": "available",
+  "assetId": "frame-gallery",
+  "appearance": ["Gallery: deep matte-plaster box frame with a warm LED reveal, floating oak shelf with a terracotta vase and a brass knot", "Neon Night: gunmetal frame with magenta outer and cyan inner neon tubes, amber corner slashes, cyan floor line", "Washi & Wood: hinoki posts and beams, glowing shoji panels on both sides, a round paper lantern", "Holo Portal: three floating emissive rounded rings (cyan, violet, blue), glass halo, light nodes, hovering base puck", "Moss & Stone: stacked natural stone slabs, moss cushions and fern fronds", "Cosmos: deep-navy frame, star field, ringed planet, orbit line and a small moon"],
+  "behaviors": ["Opening is hollow with no geometry and no collider, so rays reach the other app's window behind it", "Every mesh whose material name starts with emit_ is a theme light: its emissive intensity follows the show state (Lights up 100 %, Opening 60 %->, Showing 12 %, Closing back over 6 s)", "Switching style cross-fades over 1.2 s and switches the ambience loop; the choice is remembered", "Uniform resize only; the model is scaled to the Volume (750 dp per model metre at the default size)"],
+  "previewLimitations": ["Renders are lit by a neutral room environment; on device the passthrough room is not dimmed", "Bloom on emissive tubes is a render effect; on device glow depends on runtime post-processing support"]
+ },
+ "align-outline": {
+  "represents": "Alignment guide: glowing dashed outline of the opening shown only in Align mode",
+  "previewRepresentation": "CSS dashed border",
+  "assetStatus": "to-create",
+  "behaviors": ["Shown while Align mode is on"]
+ },
+ "align-panel": {
+  "relationship": "Inside the Volume, centred under the opening, only while Align mode is on",
+  "followBehavior": "Fixed to the frame; scales with the Volume when the user resizes it"
+ }
+}
+</script>
+<script id="i18n-data" type="application/json">
+{
+ "en": {"app.name":"Home Cinema","status.up":"Lights up · waiting for sound","status.opening":"Opening · frame lights dimming","status.showing":"Showing · sound detected","status.closing":"Intermission · frame lights coming back","status.align":"Align mode","tabs":"Show,Settings","style.label":"Frame style","st.gallery":"Gallery","st.neon":"Neon Night","st.wa":"Washi & Wood","st.portal":"Holo Portal","st.moss":"Moss & Stone","st.cosmos":"Cosmos","sd.gallery":"Warm LED reveal · quiet room tone","sd.neon":"Magenta and cyan neon · rain on a city street","sd.wa":"Glowing shoji and lantern · soft rain on a roof","sd.portal":"Floating light rings · low synth pad","sd.moss":"Stone, moss and ferns · forest stream","sd.cosmos":"Stars and a ringed planet · deep space drone","show.start":"Start the show","show.end":"End the show","auto.h":"Start with the sound","auto.s":"Frame lights dim when your player makes sound and come back after 8 s of silence","align.open":"Align frame to player","align.title":"Fit your player into the frame","align.s1":"1  Drag your player window into the opening.","align.s2":"2  Drag a corner of this frame to resize it. It keeps its shape.","align.note":"Home Cinema can't see other apps' windows, so this is done by hand once.","align.done":"Done","timer.h":"Sleep timer","timer.s":"When it ends the frame lights come back and sound fades. Your player keeps playing.","timer.opts":"Off,60 min,90 min,120 min","sound.h":"Style ambience sound","sound.s":"Each style has its own: room tone, city rain, roof rain, synth pad, forest stream, space drone","lang.h":"Language","lang.sys":"Follow system","lang.zh":"简体中文","lang.en":"English","limits":"Home Cinema decorates around your player. It can't dim the room or control other apps.","exit":"Exit Home Cinema"},
+ "zh": {"app.name":"私人影院","status.up":"灯亮着 · 等待开播","status.opening":"开场 · 框灯渐暗","status.showing":"放映中 · 检测到声音","status.closing":"散场 · 框灯渐亮","status.align":"对齐模式","tabs":"放映,设置","style.label":"框的风格","st.gallery":"白廊","st.neon":"霓虹夜","st.wa":"和纸木格","st.portal":"全息光环","st.moss":"苔石","st.cosmos":"星海","sd.gallery":"暖光灯槽 · 安静的展厅底噪","sd.neon":"品红与青色霓虹 · 城市雨声","sd.wa":"发光障子和纸灯 · 屋檐细雨","sd.portal":"悬浮光环 · 低沉合成器长音","sd.moss":"石块、苔藓和蕨叶 · 林间溪流","sd.cosmos":"星点和带环行星 · 深空低鸣","show.start":"开场","show.end":"散场","auto.h":"有声自动开场","auto.s":"播放器出声时框灯渐暗，安静 8 秒后渐亮","align.open":"把框对准播放器","align.title":"把播放器放进框里","align.s1":"1  把播放器窗口拖进框中间。","align.s2":"2  拖动这个框的一角来缩放，比例不变。","align.note":"私人影院看不到别的应用的窗口，所以这一步要手动做一次。","align.done":"完成","timer.h":"睡眠计时","timer.s":"到点后框灯亮起、声音淡出，播放器不受影响。","timer.opts":"关,60 分钟,90 分钟,120 分钟","sound.h":"风格环境声","sound.s":"每种风格一段：展厅底噪、城市雨、屋檐雨、合成器、溪流、深空","lang.h":"语言","lang.sys":"跟随系统","lang.zh":"简体中文","lang.en":"English","limits":"私人影院只装饰播放器四周，不能调暗房间，也不能控制别的应用。","exit":"退出私人影院"}
+}
+</script>
+<script src="preview.js" defer></script>
+</body></html>

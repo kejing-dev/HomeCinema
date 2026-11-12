@@ -1,0 +1,1466 @@
+{
+ "schemaVersion": "write-spec-draft-1",
+ "metadata": {
+  "projectName": "Home Cinema",
+  "revision": 3,
+  "preview": "preview.html",
+  "languages": [
+   "en",
+   "zh-CN"
+  ],
+  "references": [
+   {
+    "path": "runtime/components.js",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "3d8c170c893c5813436c62ad7dc2ef6023f5aa8753aa9982dba50d406a9ab160"
+   },
+   {
+    "path": "runtime/tokens.css",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "cd316672ea73a2f386a6ce9fb8a39d5456c3b4f88e772ddfd5aed5fbbd2cf3c0"
+   },
+   {
+    "path": "runtime/tokens.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "8788c7ae95d02eca1827cf42b0688aa6b12de57706a97dce1d7f79becee4b0bd"
+   },
+   {
+    "path": "runtime/color-roles.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "3888822c83b7f287d6c4e18bcbf9ec6cc7ce38db5012caf5e42a8df96461bf3f"
+   }
+  ]
+ },
+ "experience": {
+  "subject": "A cinema frame that decorates around whatever video the user is already watching in another app (system player, PICO Video, browser): six contemporary 3D frame styles (Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos), each with its own theme lights and ambience, with show lighting that follows the sound and a sleep timer. It does not play video, dim the room or control other apps.",
+  "form": "Shared Space only. A hollow 3D Volume (one of six real 3D frame styles) plus a small Planar controls window to its right. No Stage, because Stage forces Full Space, which hides other apps and stops their playback (verified on emulator, see feasibility.md)."
+ },
+ "theme": {
+  "brandColors": {}
+ },
+ "surfaces": [
+  {
+   "id": "frame-volume",
+   "type": "volume",
+   "defaultSize": {
+    "width": 2550,
+    "height": 1500,
+    "depth": 450,
+    "unit": "dp"
+   },
+   "rootNodeId": "vol-root",
+   "purpose": "Main window. Transparent (no material background, base panel hidden), uniform resize only so the 16:9 opening keeps its shape. The user aligns it around the other app's player window by hand; Home Cinema cannot read other windows' poses. No recenter or bring-to-front promise."
+  },
+  {
+   "id": "controls-window",
+   "type": "planar",
+   "defaultSize": {
+    "width": 480,
+    "height": 720,
+    "unit": "dp"
+   },
+   "rootNodeId": "ctl-root",
+   "windowBackground": "material",
+   "ownerSurfaceId": "frame-volume",
+   "initiallyVisible": true,
+   "placement": {
+    "side": "end",
+    "align": "bottom",
+    "gapDp": 60,
+    "depthDp": 0
+   },
+   "purpose": "Controls beside the frame (Placement.right of the Volume); never over the opening."
+  }
+ ],
+ "initialStateId": "lights-up",
+ "states": [
+  {
+   "id": "lights-up",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "style": "gallery",
+    "showState": "up",
+    "alignMode": "off",
+    "panelPage": "Show",
+    "autoShow": true,
+    "sleepTimer": "Off",
+    "ambience": false,
+    "language": "Follow system"
+   }
+  },
+  {
+   "id": "first-launch-align",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "alignMode": "on"
+   },
+   "note": "Shown automatically on first launch, then only from Align frame to player"
+  },
+  {
+   "id": "showing",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "showState": "showing"
+   }
+  },
+  {
+   "id": "settings",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "panelPage": "Settings"
+   }
+  }
+ ],
+ "actions": [
+  {
+   "id": "choose-style",
+   "purpose": "Loads the selected style's GLB (Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos) into the Volume with a 1.2 s cross-fade, switches its theme lights (emit_* materials) and ambience loop, updates the style line; remembered across launches."
+  },
+  {
+   "id": "toggle-show",
+   "purpose": "Manual fallback. Start the show: Opening (theme lights fade to 12 % over 4 s, ambience fades in) then Showing. End the show: Closing (theme lights back to 100 % over 6 s, ambience fades out) then Lights up. Only our own frame lights change; the room is not dimmed."
+  },
+  {
+   "id": "toggle-auto-show",
+   "purpose": "When on (default), polls AudioManager.isMusicActive every 1 s: inactive to active starts the show; 8 s of continuous inactivity ends it. A manual press overrides auto until the next state change from sound."
+  },
+  {
+   "id": "enter-align-mode",
+   "purpose": "Shows the alignment outline and the align panel; the system window handles of the Volume are highlighted; theme lights stay up so the opening is easy to see."
+  },
+  {
+   "id": "leave-align-mode",
+   "purpose": "Hides the alignment aids. The Volume keeps the size and position the user set (the system restores it on next launch where supported)."
+  },
+  {
+   "id": "set-sleep-timer",
+   "purpose": "Off / 60 / 90 / 120 min. On expiry runs End the show and stops ambience; it never pauses or closes the other app. A small remaining-time line appears under the status text while active."
+  },
+  {
+   "id": "toggle-ambience",
+   "purpose": "Plays the selected style's looped ambience during Opening and Showing only; off by default."
+  },
+  {
+   "id": "set-ambience-volume",
+   "purpose": "Sets ambience volume 0-1 (default 0.3)."
+  },
+  {
+   "id": "switch-panel-page",
+   "purpose": "Shows the Show or Settings page in the controls window."
+  },
+  {
+   "id": "open-language-menu",
+   "purpose": "Opens the language menu anchored to the language button."
+  },
+  {
+   "id": "choose-language",
+   "purpose": "Applies Follow system / Simplified Chinese / English to all strings immediately and persists it."
+  },
+  {
+   "id": "exit-app",
+   "purpose": "Finishes the activity and closes the frame Volume and the controls window."
+  }
+ ],
+ "nodes": [
+  {
+   "id": "align-outline",
+   "kind": "domain_visual",
+   "rendererKey": "align-outline",
+   "purpose": "3D model: Alignment guide: glowing dashed outline of the opening shown only in Align mode",
+   "layout": {
+    "xDp": 675,
+    "yDp": 412,
+    "widthDp": 1200,
+    "heightDp": 676
+   },
+   "designNotes": {
+    "represents": "Alignment guide: glowing dashed outline of the opening shown only in Align mode",
+    "previewRepresentation": "CSS dashed border",
+    "assetStatus": "to-create",
+    "behaviors": [
+     "Shown while Align mode is on"
+    ]
+   },
+   "bindings": {
+    "hidden": "alignMode == off"
+   }
+  },
+  {
+   "id": "frame-model",
+   "kind": "domain_visual",
+   "rendererKey": "frame-style-model",
+   "purpose": "3D model: The selected frame style as one 3D model (GLB, metres) filling the Volume around a 1.6 x 0.9 m hollow 16:9 opening; six styles: Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos",
+   "layout": {
+    "sizing": "matchParent",
+    "modelExtentM": [
+     3.4,
+     2.0,
+     0.6
+    ],
+    "openingM": [
+     1.6,
+     0.9
+    ],
+    "dpPerModelMetre": 750
+   },
+   "assetId": "frame-gallery",
+   "bindings": {
+    "assetId": "frame-<style> (gallery | neon | wa | portal | moss | cosmos)",
+    "showState": "showState",
+    "alignMode": "alignMode"
+   },
+   "designNotes": {
+    "represents": "The selected frame style as one 3D model (GLB, metres) filling the Volume around a 1.6 x 0.9 m hollow 16:9 opening; six styles: Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos",
+    "previewRepresentation": "Transparent orthographic renders of the actual GLB (lights-up and showing variants), cross-faded by show state",
+    "assetStatus": "available",
+    "assetId": "frame-gallery",
+    "appearance": [
+     "Gallery: deep matte-plaster box frame with a warm LED reveal, floating oak shelf with a terracotta vase and a brass knot",
+     "Neon Night: gunmetal frame with magenta outer and cyan inner neon tubes, amber corner slashes, cyan floor line",
+     "Washi & Wood: hinoki posts and beams, glowing shoji panels on both sides, a round paper lantern",
+     "Holo Portal: three floating emissive rounded rings (cyan, violet, blue), glass halo, light nodes, hovering base puck",
+     "Moss & Stone: stacked natural stone slabs, moss cushions and fern fronds",
+     "Cosmos: deep-navy frame, star field, ringed planet, orbit line and a small moon"
+    ],
+    "behaviors": [
+     "Opening is hollow with no geometry and no collider, so rays reach the other app's window behind it",
+     "Every mesh whose material name starts with emit_ is a theme light: its emissive intensity follows the show state (Lights up 100 %, Opening 60 %->, Showing 12 %, Closing back over 6 s)",
+     "Switching style cross-fades over 1.2 s and switches the ambience loop; the choice is remembered",
+     "Uniform resize only; the model is scaled to the Volume (750 dp per model metre at the default size)"
+    ],
+    "previewLimitations": [
+     "Renders are lit by a neutral room environment; on device the passthrough room is not dimmed",
+     "Bloom on emissive tubes is a render effect; on device glow depends on runtime post-processing support"
+    ]
+   },
+   "children": [
+    "align-outline"
+   ]
+  },
+  {
+   "id": "align-title",
+   "kind": "text",
+   "content": "Fit your player into the frame",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Fit your player into the frame",
+     "zh": "把播放器放进框里",
+     "key": "align.title"
+    }
+   }
+  },
+  {
+   "id": "align-step1",
+   "kind": "text",
+   "content": "1  Drag your player window into the opening.",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "1  Drag your player window into the opening.",
+     "zh": "1  把播放器窗口拖进框中间。",
+     "key": "align.s1"
+    }
+   }
+  },
+  {
+   "id": "align-step2",
+   "kind": "text",
+   "content": "2  Drag a corner of this frame to resize it. It keeps its shape.",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "2  Drag a corner of this frame to resize it. It keeps its shape.",
+     "zh": "2  拖动这个框的一角来缩放，比例不变。",
+     "key": "align.s2"
+    }
+   }
+  },
+  {
+   "id": "align-note",
+   "kind": "text",
+   "content": "Home Cinema can't see other apps' windows, so this is done by hand once.",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema can't see other apps' windows, so this is done by hand once.",
+     "zh": "私人影院看不到别的应用的窗口，所以这一步要手动做一次。",
+     "key": "align.note"
+    }
+   }
+  },
+  {
+   "id": "align-steps",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 6
+   },
+   "children": [
+    "align-step1",
+    "align-step2",
+    "align-note"
+   ]
+  },
+  {
+   "id": "align-done",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Done",
+    "leading-icon": "ic_check",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Done",
+     "zh": "完成",
+     "key": "align.done"
+    }
+   },
+   "events": {
+    "click-action": "leave-align-mode"
+   }
+  },
+  {
+   "id": "align-actions",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "justify": "end",
+    "gapDp": 8
+   },
+   "children": [
+    "align-done"
+   ]
+  },
+  {
+   "id": "align-body",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "widthDp": 640,
+    "gapDp": 12,
+    "paddingDp": 24
+   },
+   "children": [
+    "align-title",
+    "align-steps",
+    "align-actions"
+   ]
+  },
+  {
+   "id": "align-panel",
+   "kind": "spatialui",
+   "component": "sui-attachment-panel",
+   "props": {
+    "background": "material"
+   },
+   "designNotes": {
+    "relationship": "Inside the Volume, centred under the opening, only while Align mode is on",
+    "followBehavior": "Fixed to the frame; scales with the Volume when the user resizes it"
+   },
+   "children": [
+    "align-body"
+   ],
+   "bindings": {
+    "hidden": "alignMode == off"
+   }
+  },
+  {
+   "id": "vol-root",
+   "kind": "layout",
+   "layout": {
+    "mode": "stack",
+    "sizing": "matchParent",
+    "note": "Volume content root; 3D scene children are positioned in the Volume, the align panel is a scene attachment"
+   },
+   "children": [
+    "frame-model",
+    "align-panel"
+   ]
+  },
+  {
+   "id": "ctl-icon",
+   "kind": "media",
+   "assetId": "app-icon",
+   "layout": {
+    "widthDp": 48,
+    "heightDp": 48,
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "ctl-title",
+   "kind": "text",
+   "content": "Home Cinema",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema",
+     "zh": "私人影院",
+     "key": "app.name"
+    }
+   }
+  },
+  {
+   "id": "ctl-status",
+   "kind": "text",
+   "content": "Lights up · waiting for sound",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Lights up · waiting for sound",
+     "zh": "灯亮着 · 等待开播",
+     "key": "status.up"
+    }
+   },
+   "bindings": {
+    "content": "status text for the current show state (status.up / opening / showing / closing / align)"
+   }
+  },
+  {
+   "id": "ctl-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2,
+    "grow": 1
+   },
+   "children": [
+    "ctl-title",
+    "ctl-status"
+   ]
+  },
+  {
+   "id": "ctl-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 12,
+    "align": "center"
+   },
+   "children": [
+    "ctl-icon",
+    "ctl-head-copy"
+   ]
+  },
+  {
+   "id": "ctl-tabs",
+   "kind": "spatialui",
+   "component": "sui-segment-control",
+   "props": {
+    "options": "Show,Settings",
+    "selected-index": 0,
+    "custom-width": 432
+   },
+   "localizedText": {
+    "options": {
+     "en": "Show,Settings",
+     "zh": "放映,设置",
+     "key": "tabs"
+    }
+   },
+   "events": {
+    "select": "switch-panel-page"
+   }
+  },
+  {
+   "id": "style-label",
+   "kind": "text",
+   "content": "Frame style",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Frame style",
+     "zh": "框的风格",
+     "key": "style.label"
+    }
+   }
+  },
+  {
+   "id": "style-gallery-img",
+   "kind": "media",
+   "assetId": "style-gallery",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-gallery-name",
+   "kind": "text",
+   "content": "Gallery",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Gallery",
+     "zh": "白廊",
+     "key": "st.gallery"
+    }
+   }
+  },
+  {
+   "id": "style-gallery",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == gallery"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-gallery-img",
+    "style-gallery-name"
+   ]
+  },
+  {
+   "id": "style-neon-img",
+   "kind": "media",
+   "assetId": "style-neon",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-neon-name",
+   "kind": "text",
+   "content": "Neon Night",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Neon Night",
+     "zh": "霓虹夜",
+     "key": "st.neon"
+    }
+   }
+  },
+  {
+   "id": "style-neon",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == neon"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-neon-img",
+    "style-neon-name"
+   ]
+  },
+  {
+   "id": "style-wa-img",
+   "kind": "media",
+   "assetId": "style-wa",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-wa-name",
+   "kind": "text",
+   "content": "Washi & Wood",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Washi & Wood",
+     "zh": "和纸木格",
+     "key": "st.wa"
+    }
+   }
+  },
+  {
+   "id": "style-wa",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == wa"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-wa-img",
+    "style-wa-name"
+   ]
+  },
+  {
+   "id": "style-portal-img",
+   "kind": "media",
+   "assetId": "style-portal",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-portal-name",
+   "kind": "text",
+   "content": "Holo Portal",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Holo Portal",
+     "zh": "全息光环",
+     "key": "st.portal"
+    }
+   }
+  },
+  {
+   "id": "style-portal",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == portal"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-portal-img",
+    "style-portal-name"
+   ]
+  },
+  {
+   "id": "style-moss-img",
+   "kind": "media",
+   "assetId": "style-moss",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-moss-name",
+   "kind": "text",
+   "content": "Moss & Stone",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Moss & Stone",
+     "zh": "苔石",
+     "key": "st.moss"
+    }
+   }
+  },
+  {
+   "id": "style-moss",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == moss"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-moss-img",
+    "style-moss-name"
+   ]
+  },
+  {
+   "id": "style-cosmos-img",
+   "kind": "media",
+   "assetId": "style-cosmos",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-cosmos-name",
+   "kind": "text",
+   "content": "Cosmos",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Cosmos",
+     "zh": "星海",
+     "key": "st.cosmos"
+    }
+   }
+  },
+  {
+   "id": "style-cosmos",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == cosmos"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-cosmos-img",
+    "style-cosmos-name"
+   ]
+  },
+  {
+   "id": "style-grid",
+   "kind": "layout",
+   "layout": {
+    "mode": "grid",
+    "columns": 3,
+    "gapDp": 12
+   },
+   "children": [
+    "style-gallery",
+    "style-neon",
+    "style-wa",
+    "style-portal",
+    "style-moss",
+    "style-cosmos"
+   ]
+  },
+  {
+   "id": "style-desc",
+   "kind": "text",
+   "content": "Warm LED reveal · quiet room tone",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Warm LED reveal · quiet room tone",
+     "zh": "暖光灯槽 · 安静的展厅底噪",
+     "key": "sd.gallery"
+    }
+   },
+   "bindings": {
+    "content": "sd.<style>: the selected style's light and ambience line"
+   }
+  },
+  {
+   "id": "show-toggle",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "text": "Start the show",
+    "leading-icon": "ic_play",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Start the show",
+     "zh": "开场",
+     "key": "show.start"
+    }
+   },
+   "bindings": {
+    "text": "show.start while Lights up or Closing; show.end while Opening or Showing",
+    "leading-icon": "ic_play / ic_sun"
+   },
+   "events": {
+    "click-action": "toggle-show"
+   }
+  },
+  {
+   "id": "auto-switch",
+   "kind": "spatialui",
+   "component": "sui-switch",
+   "props": {
+    "slot": "trailing",
+    "checked": null
+   },
+   "events": {
+    "checked-change": "toggle-auto-show"
+   }
+  },
+  {
+   "id": "auto-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_volume_high",
+    "headline": "Start with the sound",
+    "supporting": "Frame lights dim when your player makes sound and come back after 8 s of silence"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Start with the sound",
+     "zh": "有声自动开场",
+     "key": "auto.h"
+    },
+    "supporting": {
+     "en": "Frame lights dim when your player makes sound and come back after 8 s of silence",
+     "zh": "播放器出声时框灯渐暗，安静 8 秒后渐亮",
+     "key": "auto.s"
+    }
+   },
+   "children": [
+    "auto-switch"
+   ]
+  },
+  {
+   "id": "show-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8
+   },
+   "children": [
+    "show-toggle",
+    "auto-item"
+   ]
+  },
+  {
+   "id": "align-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "text": "Align frame to player",
+    "leading-icon": "ic_expand",
+    "size": "regular",
+    "container-color": "fillTertiary",
+    "content-color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Align frame to player",
+     "zh": "把框对准播放器",
+     "key": "align.open"
+    }
+   },
+   "events": {
+    "click-action": "enter-align-mode"
+   }
+  },
+  {
+   "id": "page-show",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 14,
+    "grow": 1
+   },
+   "children": [
+    "style-label",
+    "style-grid",
+    "style-desc",
+    "show-row",
+    "align-btn"
+   ],
+   "bindings": {
+    "hidden": "panelPage != Show"
+   }
+  },
+  {
+   "id": "timer-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_playback_timer_fill",
+    "headline": "Sleep timer",
+    "supporting": "When it ends the frame lights come back and sound fades. Your player keeps playing."
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Sleep timer",
+     "zh": "睡眠计时",
+     "key": "timer.h"
+    },
+    "supporting": {
+     "en": "When it ends the frame lights come back and sound fades. Your player keeps playing.",
+     "zh": "到点后框灯亮起、声音淡出，播放器不受影响。",
+     "key": "timer.s"
+    }
+   }
+  },
+  {
+   "id": "timer-seg",
+   "kind": "spatialui",
+   "component": "sui-segment-control",
+   "props": {
+    "options": "Off,60 min,90 min,120 min",
+    "selected-index": 0,
+    "custom-width": 432
+   },
+   "localizedText": {
+    "options": {
+     "en": "Off,60 min,90 min,120 min",
+     "zh": "关,60 分钟,90 分钟,120 分钟",
+     "key": "timer.opts"
+    }
+   },
+   "events": {
+    "select": "set-sleep-timer"
+   }
+  },
+  {
+   "id": "sound-switch",
+   "kind": "spatialui",
+   "component": "sui-switch",
+   "props": {
+    "slot": "trailing"
+   },
+   "events": {
+    "checked-change": "toggle-ambience"
+   }
+  },
+  {
+   "id": "sound-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_film",
+    "headline": "Style ambience sound",
+    "supporting": "Each style has its own: room tone, city rain, roof rain, synth pad, forest stream, space drone"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Style ambience sound",
+     "zh": "风格环境声",
+     "key": "sound.h"
+    },
+    "supporting": {
+     "en": "Each style has its own: room tone, city rain, roof rain, synth pad, forest stream, space drone",
+     "zh": "每种风格一段：展厅底噪、城市雨、屋檐雨、合成器、溪流、深空",
+     "key": "sound.s"
+    }
+   },
+   "children": [
+    "sound-switch"
+   ]
+  },
+  {
+   "id": "sound-vol",
+   "kind": "spatialui",
+   "component": "sui-slider",
+   "props": {
+    "value": 0.3,
+    "semantic-label": "Ambience volume"
+   },
+   "events": {
+    "value-change": "set-ambience-volume"
+   }
+  },
+  {
+   "id": "lang-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "slot": "trailing",
+    "size": "small",
+    "text": "Follow system",
+    "trailing-icon": "ic_arrow_down"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "lang.sys"
+    }
+   },
+   "events": {
+    "click-action": "open-language-menu"
+   }
+  },
+  {
+   "id": "lang-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_globe",
+    "headline": "Language"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Language",
+     "zh": "语言",
+     "key": "lang.h"
+    }
+   },
+   "children": [
+    "lang-btn"
+   ]
+  },
+  {
+   "id": "limits-note",
+   "kind": "text",
+   "content": "Home Cinema decorates around your player. It can't dim the room or control other apps.",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema decorates around your player. It can't dim the room or control other apps.",
+     "zh": "私人影院只装饰播放器四周，不能调暗房间，也不能控制别的应用。",
+     "key": "limits"
+    }
+   }
+  },
+  {
+   "id": "lang-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {
+    "anchor-node-id": "lang-btn"
+   },
+   "children": [
+    "lang-sys",
+    "lang-zh",
+    "lang-en"
+   ],
+   "bindings": {
+    "hidden": "closed until open-language-menu"
+   }
+  },
+  {
+   "id": "set-list",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "grow": 1,
+    "overflow": "auto"
+   },
+   "children": [
+    "timer-item",
+    "timer-seg",
+    "sound-item",
+    "sound-vol",
+    "lang-item",
+    "lang-menu",
+    "limits-note"
+   ]
+  },
+  {
+   "id": "exit-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Exit Home Cinema",
+    "leading-icon": "ic_arrow_exit_door",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Exit Home Cinema",
+     "zh": "退出私人影院",
+     "key": "exit"
+    }
+   },
+   "events": {
+    "click-action": "exit-app"
+   }
+  },
+  {
+   "id": "exit-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "justify": "end"
+   },
+   "children": [
+    "exit-btn"
+   ]
+  },
+  {
+   "id": "page-settings",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 14,
+    "grow": 1
+   },
+   "children": [
+    "set-list",
+    "exit-row"
+   ],
+   "bindings": {
+    "hidden": "panelPage != Settings"
+   }
+  },
+  {
+   "id": "ctl-root",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "paddingDp": 24,
+    "gapDp": 16,
+    "height": "fill"
+   },
+   "children": [
+    "ctl-head",
+    "ctl-tabs",
+    "page-show",
+    "page-settings"
+   ]
+  },
+  {
+   "id": "lang-sys",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Follow system"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "lang.sys"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-zh",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "简体中文"
+   },
+   "localizedText": {
+    "title": {
+     "en": "简体中文",
+     "zh": "简体中文",
+     "key": "lang.zh"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-en",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "English"
+   },
+   "localizedText": {
+    "title": {
+     "en": "English",
+     "zh": "English",
+     "key": "lang.en"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  }
+ ],
+ "assets": [
+  {
+   "id": "app-icon",
+   "kind": "image",
+   "src": "assets/app-icon.svg",
+   "purpose": "Application icon (original)",
+   "sha256": "5cd94891915617e25c0c4c5125b32b3eeca08744145c728d0ed78205fac24561"
+  },
+  {
+   "id": "frame-cosmos-showing-render",
+   "kind": "image",
+   "src": "assets/frame-cosmos-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "2b34eb90fcaadf0910440e3646a0e334936663584b5136bd8f444004653f4b8c"
+  },
+  {
+   "id": "frame-cosmos-up-render",
+   "kind": "image",
+   "src": "assets/frame-cosmos-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "923a2731bd01e1c0b0162a4805566c2c7ffb6520151f1fbf5babb4c4de9a5309"
+  },
+  {
+   "id": "frame-gallery-showing-render",
+   "kind": "image",
+   "src": "assets/frame-gallery-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "f0d0b54653d4fa568ae315716118cb6570b1cb05a649f6889cef4a611f90767b"
+  },
+  {
+   "id": "frame-gallery-up-render",
+   "kind": "image",
+   "src": "assets/frame-gallery-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "4915c5fc9a890676424c39facbd6ec5f6718b78885e4650e39a55ae10795e33c"
+  },
+  {
+   "id": "frame-moss-showing-render",
+   "kind": "image",
+   "src": "assets/frame-moss-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "c1288efb3d94322abe1393ffd8c144b800cff352171a1bfe2cf91bf33a1a38e4"
+  },
+  {
+   "id": "frame-moss-up-render",
+   "kind": "image",
+   "src": "assets/frame-moss-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "898392070795d4ba7a96f5d2beef4387c79d3fdcad3f96e701deb319b0a1a79c"
+  },
+  {
+   "id": "frame-neon-showing-render",
+   "kind": "image",
+   "src": "assets/frame-neon-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "9fdec73b93e15d304fa977c2836083e311f505ec02b702e627efad847a5040fa"
+  },
+  {
+   "id": "frame-neon-up-render",
+   "kind": "image",
+   "src": "assets/frame-neon-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "4e6cd1aa61f1a7a8c1588a055f48e14db16f90b507f4ae9b5abcb6d342c2ea9b"
+  },
+  {
+   "id": "frame-portal-showing-render",
+   "kind": "image",
+   "src": "assets/frame-portal-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "5e1d625b71c1898969dfeb282749cc2b232e20f37f8df147521dceabec825af0"
+  },
+  {
+   "id": "frame-portal-up-render",
+   "kind": "image",
+   "src": "assets/frame-portal-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "7fff72d938da9ae4f5033cdac713e48b206b7ea27e644bf0c72b4d387637572c"
+  },
+  {
+   "id": "frame-wa-showing-render",
+   "kind": "image",
+   "src": "assets/frame-wa-showing.png",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "66ae6db008744cf5292a98f48ecd123048ddce03e37d931d3caa372b603d63bd"
+  },
+  {
+   "id": "frame-wa-up-render",
+   "kind": "image",
+   "src": "assets/frame-wa-up.png",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "19bb1b7d9a3bab87c677e151fc5df23285647dbcc99027c1c274ba6194d35f43"
+  },
+  {
+   "id": "style-cosmos",
+   "kind": "image",
+   "src": "assets/style-cosmos.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "3ae5d43ae50aab44aefcc6950c5154bc9eb2512b1741de61fbb13b6a1e9df627"
+  },
+  {
+   "id": "style-gallery",
+   "kind": "image",
+   "src": "assets/style-gallery.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "03edffee6b34d5ad8bebadf4705d062bfb46b0a37342f7a6e14de24f42766c29"
+  },
+  {
+   "id": "style-moss",
+   "kind": "image",
+   "src": "assets/style-moss.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "f2e246823a42e9e55e439e80ac107518e04f0e4b8ca2187437a3d3c270767a15"
+  },
+  {
+   "id": "style-neon",
+   "kind": "image",
+   "src": "assets/style-neon.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "0b823b1433bea2f87f4c42f4d244371b9222414327010c93d88c2f759b6ba054"
+  },
+  {
+   "id": "style-portal",
+   "kind": "image",
+   "src": "assets/style-portal.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "abcf77ebc9f66b467edaae413d6a67288aa0a6652a508cc4512007cc9ae18609"
+  },
+  {
+   "id": "style-wa",
+   "kind": "image",
+   "src": "assets/style-wa.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "a0cfa71ea70d1f0a143a03b2aa1aff544378b6a5c97eddcf9bec73b66063a95b"
+  },
+  {
+   "id": "frame-cosmos",
+   "kind": "model",
+   "src": "assets/frames/cosmos.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "7b96bbb45bbf507abd0ce65e4385a288f8534f483ca8274f067ca6ccd66f661c"
+  },
+  {
+   "id": "frame-gallery",
+   "kind": "model",
+   "src": "assets/frames/gallery.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "f4ed776f53e2b0901233e2d89a752828bae0268833af0680c758bc96e4936e16"
+  },
+  {
+   "id": "frame-moss",
+   "kind": "model",
+   "src": "assets/frames/moss.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "f1104ddb4bea7d64200e526e812cc6c203fea564d02ef9aa751bc87e3b6ce33c"
+  },
+  {
+   "id": "frame-neon",
+   "kind": "model",
+   "src": "assets/frames/neon.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "4d322a2648061c42c50350896855ea65f418d47bcf73139035a8b58c03acbb02"
+  },
+  {
+   "id": "frame-portal",
+   "kind": "model",
+   "src": "assets/frames/portal.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "da31da49860f63c5a4741a678adf6a00ef83b3a200ab93ffc91c6e4a2494bb89"
+  },
+  {
+   "id": "frame-wa",
+   "kind": "model",
+   "src": "assets/frames/wa.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR + emissive theme lights; organic parts decimated with bin/glb_decimate.py)",
+   "sha256": "603135b23b83f37c53e9874fe99a230a76d0440a696feb8a72ef8589026f144a"
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+11-10 22:13:27.382  4433  4433 I AmbProbe: cmd=mixed result=com.pico.spatial.ui.platform.containers.OpenStageResult$Allowed@f0ad0dd
+11-10 22:13:28.884  4433  4433 I AmbProbe: after mixed: space=FULL_SPACE musicActive=false playbackCfgUsages=[] sessions=SecurityException: Missing permission to control media.
+11-10 22:13:51.602  4433  4433 I AmbProbe: cmd=close result=closed
+11-10 22:13:53.103  4433  4433 I AmbProbe: after close: space=SHARED_SPACE musicActive=true playbackCfgUsages=[1] sessions=SecurityException: Missing permission to control media.
+11-10 22:14:10.334  4433  4433 I AmbProbe: cmd=prog result=com.pico.spatial.ui.platform.containers.OpenStageResult$Allowed@f0ad0dd
+11-10 22:14:11.835  4433  4433 I AmbProbe: after prog: space=FULL_SPACE musicActive=false playbackCfgUsages=[] sessions=SecurityException: Missing permission to control media.
+11-10 22:14:16.407  4433  4433 I AmbProbe: cmd=close result=closed
+11-10 22:14:17.909  4433  4433 I AmbProbe: after close: space=SHARED_SPACE musicActive=true playbackCfgUsages=[1] sessions=SecurityException: Missing permission to control media.
+--------- beginning of main
+11-10 22:13:04.032  4433  4433 I AmbProbe: tick space=UNKNOWN musicActive=true playbackCfgUsages=[1] sessions=SecurityException: Missing permission to control media.
+11-10 22:13:04.271  4433  4433 I AmbProbe: volume composed, activity=true

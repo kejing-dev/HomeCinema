@@ -1,0 +1,85 @@
+[90m0.0.2-alpha.6[39m [33m[Internal Build][39m
+[90mJava: 21.0.13 (Eclipse Adoptium)
+JDK @ /Users/bytedance/.pico/primer-cli/jdk/jdk-21.0.13+9/Contents/Home[39m
+
+Interactive mode: Creating a new Spatial Project...
+Target Directory : /Users/bytedance/Downloads/home-cinema/.scratch/ambience-probe
+Template Source  : pre_release_cn
+[templates] Fetching tool manifest for channel 'pre_release_cn'...
+[init] Loaded tool manifest from channel 'pre_release_cn' (provenance=TCC); online sdk entries=6.2.8,6.2.6,6.1.9,6.1.8,6.0.0,0.13.3,0.12.2,0.11.7,0.10.7,0.10.5,0.10.3,0.10.1,0.9.5,0.8.6,0.7.2,0.7.0.
+Note: spatialSDKVersion=6.2.8 is not present in the compatibility table; using primer/kotlin/compose from 6.2.6.
+[init] Resolved SDK version=6.2.8 (source=online manifest); sdk template minor=6.2, using template minor=6.2.
+Template Version : 6.2
+[templates] Ensuring templates for minor=6.2, channel=pre_release_cn, offline=false, manifestLoaded=true.
+[templates] Manifest latest template for 6.2 = v6.2.0 (https://tosv.byted.org/obj/spatial-tools-internal/online/templates/6.2/templates-6.2.0.zip).
+[templates] No local install at /Users/bytedance/Library/PICO/sdk/6.2/templates -> needs download.
+Templates for 6.2 need an update (channel=pre_release_cn, target=v6.2.0). Starting download...
+Downloading templates version 6.2.0 from https://tosv.byted.org/obj/spatial-tools-internal/online/templates/6.2/templates-6.2.0.zip...
+Speed Limit Profile: max (100% capacity - unconstrained)
+Initializing download...
+
+Error during download: Connect timed out
+Retrying in 2 seconds...
+
+Error during download: Connect timed out
+Retrying in 4 seconds...
+
+Error during download: Connect timed out
+Max retries reached. Download failed.
+Download failed. Retrying in 2 seconds...
+Retrying download (Attempt 2/3)...
+
+Error during download: Connect timed out
+Retrying in 2 seconds...
+
+Error during download: Connect timed out
+Retrying in 4 seconds...
+
+Error during download: Connect timed out
+Max retries reached. Download failed.
+Download failed. Retrying in 4 seconds...
+Retrying download (Attempt 3/3)...
+
+Error during download: Connect timed out
+Retrying in 2 seconds...
+
+Error during download: Connect timed out
+Retrying in 4 seconds...
+
+Error during download: Connect timed out
+Max retries reached. Download failed.
+Max retries reached. Download failed.
+Failed to download templates.
+----------------------------------------------------------------
+Initializing Project...
+----------------------------------------------------------------
+Target Directory : /Users/bytedance/Downloads/home-cinema/.scratch/ambience-probe
+Project Name     : AmbienceProbe
+Package Name     : com.hc.ambienceprobe
+SDK Type         : spatial
+Template         : volumetric
+Template Version : 6.2
+Primer Version   : 0.0.2-alpha.9
+SDK Version      : 6.2.8
+Spatial Tools    : Tools: 6.2, Plugin: 6.2.2, Tag: spatial
+----------------------------------------------------------------
+Fetching template configuration...
+No templates found for minor version 6.2: No templates versions are available for SDK 6.2.
+Fetching template configuration...
+No templates found for minor version 6.2: No templates versions are available for SDK 6.2.
+Exception in thread "main" java.lang.IllegalStateException: Template not found: spatial/volumetric/filelist.txt in /Users/bytedance/Library/PICO/sdk/6.2/templates or resources
+	at com.pico.spatial.primer.cli.init.TemplateEngine.openStream(TemplateEngine.kt:48)
+	at com.pico.spatial.primer.cli.init.ProjectInitializer.init(ProjectInitializer.kt:125)
+	at com.pico.spatial.primer.cli.init.ProjectInitializer.init$default(ProjectInitializer.kt:28)
+	at com.pico.spatial.primer.cli.InitCommand.run(InitCommand.kt:428)
+	at com.github.ajalt.clikt.parsers.Parser.finalizeAndRun(Parser.kt:348)
+	at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:218)
+	at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:245)
+	at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:245)
+	at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:42)
+	at com.github.ajalt.clikt.core.CliktCommand.parse(CliktCommand.kt:457)
+	at com.github.ajalt.clikt.core.CliktCommand.parse$default(CliktCommand.kt:454)
+	at com.github.ajalt.clikt.core.CliktCommand.main(CliktCommand.kt:474)
+	at com.github.ajalt.clikt.core.CliktCommand.main(CliktCommand.kt:481)
+	at com.pico.spatial.primer.cli.MainKt.main(Main.kt:109)
+Project creation failed (exit code 1).

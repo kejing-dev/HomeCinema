@@ -1,0 +1,43 @@
+{
+  "agentHosts": {
+    "claude-code": {
+      "platform": "spatial",
+      "pluginName": "pico-spatial-agentic-tools",
+      "pluginVersion": "0.7.0-beta.2",
+      "pluginSource": {
+        "kind": "release",
+        "distribution": "internal",
+        "channel": "beta",
+        "ref": "e70cc3795c9f3a7e4ca6075c55fb407d1641408e"
+      },
+      "sourcePath": "/Users/bytedance/.pico-cli/cache/spatial-agentic-tools-beta",
+      "resources": {
+        "skills": [
+          "pico-spatial-app-designer",
+          "pico-workflow-integrator",
+          "porting-android-app",
+          "spatial-accessibility",
+          "spatial-app-dev-workflow",
+          "spatial-app-onboarding",
+          "spatial-app-performance-analysis",
+          "spatial-app-performance-analysis-ext",
+          "spatial-app-performance-workflow",
+          "spatial-bundle-scene-reader",
+          "spatial-design-to-app",
+          "spatial-editor",
+          "spatial-sdk-guideline",
+          "spatial-sdk-scene-builder",
+          "spatial-sdk-update",
+          "spatial-ui-ability",
+          "spatial-ui-design-style",
+          "spatialml",
+          "spatialml-debugging",
+          "threejs-to-spatial"
+        ],
+        "mcpServers": []
+      }
+    }
+  },
+  "operationToken": "240189ae-0791-47f5-86b6-f9c2c5e20fa4",
+  "platform": "spatial"
+}

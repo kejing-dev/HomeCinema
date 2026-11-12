@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+body{margin:0;background:#0b1020;color:#e8eefc;font:15px/1.7 Arial,"Microsoft YaHei",sans-serif}
+main{max-width:1180px;margin:auto;padding:32px}h1{font-size:32px}
+h2{border-left:4px solid #56d9ff;padding-left:10px;margin-top:32px}
+.sub,.muted{color:#9eacc8}.tags{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 24px}
+.tag{padding:4px 11px;border:1px solid #334766;border-radius:20px;background:#16223a}
+.red{color:#ff8799}.yellow{color:#f5ca65}.green{color:#67e39a}.cyan{color:#56d9ff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card,table,.callout{background:#121a2d;border:1px solid #2a3959;border-radius:10px}.card{padding:14px}
+.k{color:#9eacc8;font-size:13px}.v{font-size:25px;font-weight:bold;margin:4px 0}.u{color:#b3c1df;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{padding:9px;border-bottom:1px solid #2a3959;text-align:left;vertical-align:top}
+th{background:#192641;color:#c9d8f0}.callout{padding:15px;margin:14px 0}.danger{border-color:#7b3446;background:#291720}
+.warn{border-color:#775d27;background:#2a2415}code{color:#b9eaff;background:#091222;padding:1px 4px}
+.mono{white-space:pre-wrap;background:#091222;border:1px solid #2a3959;padding:13px;border-radius:8px}
+.footer{border-top:1px solid #2a3959;margin-top:35px;padding-top:15px;color:#9eacc8;font-size:13px}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}main{padding:18px}}
+</style>
+</head>
+<body><main>
+<h1>{{TITLE}}</h1>
+<div class="sub">{{IDENTITY}}</div>
+<div class="tags">{{TAGS}}</div>
+
+<h2>1. 联合诊断摘要</h2>
+<div class="callout danger">{{SUMMARY}}</div>
+{{CROSS_SOURCE_SUMMARY}}
+
+<h2>2. 关键指标</h2>
+<h3>2.1 Perfetto / FastPerf 时间窗口</h3>
+{{LIVE_METRICS}}
+<h3>2.2 RenderDoc Vulkan 单帧</h3>
+{{RENDERDOC_METRICS}}
+
+<h2>3. RenderDoc Vulkan 证据</h2>
+{{RENDERDOC_TABLE}}
+{{TOP_TEXTURES}}
+
+<h2>4. 跨源证据对齐</h2>
+{{CROSS_SOURCE_TABLE}}
+
+<h2>5. 资产级 RenderDoc 关联</h2>
+<!-- asset attribution inserted by generate_asset_report.py -->
+{{ASSET_ATTRIBUTION}}
+
+<h2>6. 根因判断与证据等级</h2>
+{{ROOT_CAUSE}}
+
+<h2>7. 优化建议</h2>
+{{ACTIONS}}
+
+<h2>8. 下一轮 A/B 验证</h2>
+{{VALIDATION}}
+
+<h2>9. 数据源与限制</h2>
+{{PROVENANCE}}
+<div class="footer">本报告必须区分单帧结构证据、实时窗口证据和严格同帧因果证据。当前结论等级：{{CONCLUSION_LEVEL}}。</div>
+</main></body></html>

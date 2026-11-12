@@ -1,0 +1,30 @@
+{
+  "skill_name": "pico-workflow-integrator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把这个已有的 TypeScript 发布流程接入 pico-cli Workflow。它是 prepare -> build -> verify，没有循环，现有函数和测试都要保留。先评估再实施，不要真实发布。",
+      "expected_output": "Inspects the existing implementation and tests, selects Domain static-dag, maps existing functions to thin Script Step adapters, preserves the public input/output behavior, registers a v1 package, and verifies build and describe without starting a real publication."
+    },
+    {
+      "id": 2,
+      "prompt": "迁移这个已有性能诊断流程：采集操作可能在进程崩溃前已经启动，需要恢复后对账；Gate 可以 retry、request input 或输出 partial。",
+      "expected_output": "Selects Domain module-kernel, models collection as a Driver with execute/reconcile/cancel, preserves durable operation identity and bounded policy decisions, maps unknown recovery to blocked rather than replaying side effects, and tests retry, waiting, partial, and restart behavior."
+    },
+    {
+      "id": 3,
+      "prompt": "把这个已有 LangGraph 工作流接进来。它依赖 checkpoint、条件路由和 critic 到 builder 的回边，不要改写控制流。",
+      "expected_output": "Selects LangGraph codegen, preserves the reviewable back-edge and state contract, creates framework-neutral Step or Agent Task bindings, keeps graph state private, and verifies generated registration without running a real Agent."
+    },
+    {
+      "id": 4,
+      "prompt": "这是一个独立 Python 可执行程序。请让 pico-cli 直接启动它，并把它注册成新的 node-module Workflow。",
+      "expected_output": "Rejects node-module as a new integration target, identifies that arbitrary process-hosted Workflow execution is not supported by the maintained Runtime, and produces a concrete gap report without pretending the Python process is integrated."
+    },
+    {
+      "id": 5,
+      "prompt": "只分析这个旧 agent-guided Workflow 应该怎么迁移，不要改代码。",
+      "expected_output": "Stops after assessment, maps caller-owned work to a Domain caller-agent node or fixed model work to an Agent Task, identifies contract and resume behavior that must be preserved, and makes no file changes."
+    }
+  ]
+}

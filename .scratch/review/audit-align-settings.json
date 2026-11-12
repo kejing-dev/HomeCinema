@@ -1,0 +1,4849 @@
+{
+ "schemaVersion": "preview-consistency/v1",
+ "scenario": "align-settings-zh",
+ "initial": false,
+ "specUrl": "http://127.0.0.1:8792/design-spec.json",
+ "previewUrl": "http://127.0.0.1:8792/preview.html?audit=align-settings-zh&align=on&page=settings&lang=zh&style=cosmos&zoom=1&still=1&expect=%7B%22align-panel%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.enter-align-mode%22%7D%2C%20%22page-settings%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.switch-panel-page%22%7D%2C%20%22page-show%22%3A%20%7B%22visible%22%3A%20false%2C%20%22source%22%3A%20%22actions.switch-panel-page%22%7D%2C%20%22exit-btn%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.exit-app%22%7D%7D",
+ "specRevision": 3,
+ "checkedAt": "2026-11-11T06:48:37.547Z",
+ "expectations": {
+  "align-panel": {
+   "visible": true,
+   "source": "actions.enter-align-mode"
+  },
+  "page-settings": {
+   "visible": true,
+   "source": "actions.switch-panel-page"
+  },
+  "page-show": {
+   "visible": false,
+   "source": "actions.switch-panel-page"
+  },
+  "exit-btn": {
+   "visible": true,
+   "source": "actions.exit-app"
+  }
+ },
+ "summary": {
+  "match": 357,
+  "mismatch": 3,
+  "unverified": 104
+ },
+ "status": "mismatch",
+ "observations": [
+  {
+   "nodeId": "$preview",
+   "property": "url",
+   "expected": "http://127.0.0.1:8792/preview.html",
+   "actual": "http://127.0.0.1:8792/preview.html?audit=align-settings-zh&align=on&page=settings&lang=zh&style=cosmos&zoom=1&still=1&expect=%7B%22align-panel%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.enter-align-mode%22%7D%2C%20%22page-settings%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.switch-panel-page%22%7D%2C%20%22page-show%22%3A%20%7B%22visible%22%3A%20false%2C%20%22source%22%3A%20%22actions.switch-panel-page%22%7D%2C%20%22exit-btn%22%3A%20%7B%22visible%22%3A%20true%2C%20%22source%22%3A%20%22actions.exit-app%22%7D%7D",
+   "status": "mismatch",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "$scene",
+   "property": "notes.block-count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "$scene",
+   "property": "notes.valid-json-object",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.element-count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.spec-node",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.preview-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.spec-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.preserved",
+   "expected": {
+    "appearance": [
+     "Gallery: deep matte-plaster box frame with a warm LED reveal, floating oak shelf with a terracotta vase and a brass knot",
+     "Neon Night: gunmetal frame with magenta outer and cyan inner neon tubes, amber corner slashes, cyan floor line",
+     "Washi & Wood: hinoki posts and beams, glowing shoji panels on both sides, a round paper lantern",
+     "Holo Portal: three floating emissive rounded rings (cyan, violet, blue), glass halo, light nodes, hovering base puck",
+     "Moss & Stone: stacked natural stone slabs, moss cushions and fern fronds",
+     "Cosmos: deep-navy frame, star field, ringed planet, orbit line and a small moon"
+    ],
+    "assetId": "frame-gallery",
+    "assetStatus": "available",
+    "behaviors": [
+     "Opening is hollow with no geometry and no collider, so rays reach the other app's window behind it",
+     "Every mesh whose material name starts with emit_ is a theme light: its emissive intensity follows the show state (Lights up 100 %, Opening 60 %->, Showing 12 %, Closing back over 6 s)",
+     "Switching style cross-fades over 1.2 s and switches the ambience loop; the choice is remembered",
+     "Uniform resize only; the model is scaled to the Volume (750 dp per model metre at the default size)"
+    ],
+    "previewLimitations": [
+     "Renders are lit by a neutral room environment; on device the passthrough room is not dimmed",
+     "Bloom on emissive tubes is a render effect; on device glow depends on runtime post-processing support"
+    ],
+    "previewRepresentation": "Transparent orthographic renders of the actual GLB (lights-up and showing variants), cross-faded by show state",
+    "represents": "The selected frame style as one 3D model (GLB, metres) filling the Volume around a 1.6 x 0.9 m hollow 16:9 opening; six styles: Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos"
+   },
+   "actual": {
+    "appearance": [
+     "Gallery: deep matte-plaster box frame with a warm LED reveal, floating oak shelf with a terracotta vase and a brass knot",
+     "Neon Night: gunmetal frame with magenta outer and cyan inner neon tubes, amber corner slashes, cyan floor line",
+     "Washi & Wood: hinoki posts and beams, glowing shoji panels on both sides, a round paper lantern",
+     "Holo Portal: three floating emissive rounded rings (cyan, violet, blue), glass halo, light nodes, hovering base puck",
+     "Moss & Stone: stacked natural stone slabs, moss cushions and fern fronds",
+     "Cosmos: deep-navy frame, star field, ringed planet, orbit line and a small moon"
+    ],
+    "assetId": "frame-gallery",
+    "assetStatus": "available",
+    "behaviors": [
+     "Opening is hollow with no geometry and no collider, so rays reach the other app's window behind it",
+     "Every mesh whose material name starts with emit_ is a theme light: its emissive intensity follows the show state (Lights up 100 %, Opening 60 %->, Showing 12 %, Closing back over 6 s)",
+     "Switching style cross-fades over 1.2 s and switches the ambience loop; the choice is remembered",
+     "Uniform resize only; the model is scaled to the Volume (750 dp per model metre at the default size)"
+    ],
+    "previewLimitations": [
+     "Renders are lit by a neutral room environment; on device the passthrough room is not dimmed",
+     "Bloom on emissive tubes is a render effect; on device glow depends on runtime post-processing support"
+    ],
+    "previewRepresentation": "Transparent orthographic renders of the actual GLB (lights-up and showing variants), cross-faded by show state",
+    "represents": "The selected frame style as one 3D model (GLB, metres) filling the Volume around a 1.6 x 0.9 m hollow 16:9 opening; six styles: Gallery, Neon Night, Washi & Wood, Holo Portal, Moss & Stone, Cosmos"
+   },
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "notes.native-behavior",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Preserved requirements only; native geometry, animation and follow behavior require native validation.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.element-count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.spec-node",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.preview-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.spec-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.preserved",
+   "expected": {
+    "assetStatus": "to-create",
+    "behaviors": [
+     "Shown while Align mode is on"
+    ],
+    "previewRepresentation": "CSS dashed border",
+    "represents": "Alignment guide: glowing dashed outline of the opening shown only in Align mode"
+   },
+   "actual": {
+    "assetStatus": "to-create",
+    "behaviors": [
+     "Shown while Align mode is on"
+    ],
+    "previewRepresentation": "CSS dashed border",
+    "represents": "Alignment guide: glowing dashed outline of the opening shown only in Align mode"
+   },
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "notes.native-behavior",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Preserved requirements only; native geometry, animation and follow behavior require native validation.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.element-count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.spec-node",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.preview-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.spec-entry",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.preserved",
+   "expected": {
+    "followBehavior": "Fixed to the frame; scales with the Volume when the user resizes it",
+    "relationship": "Inside the Volume, centred under the opening, only while Align mode is on"
+   },
+   "actual": {
+    "followBehavior": "Fixed to the frame; scales with the Volume when the user resizes it",
+    "relationship": "Inside the Volume, centred under the opening, only while Align mode is on"
+   },
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "notes.native-behavior",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Preserved requirements only; native geometry, animation and follow behavior require native validation.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "parent",
+   "expected": "frame-model",
+   "actual": "frame-model",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "layout.xDp",
+   "expected": 675,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "layout.yDp",
+   "expected": 412,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "layout.widthDp",
+   "expected": 1200,
+   "actual": 1200,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "layout.heightDp",
+   "expected": 676,
+   "actual": 676,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-outline",
+   "property": "bindings",
+   "expected": {
+    "hidden": "alignMode == off"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "parent",
+   "expected": "vol-root",
+   "actual": "vol-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "layout.sizing",
+   "expected": "matchParent",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "layout.modelExtentM",
+   "expected": [
+    3.4,
+    2,
+    0.6
+   ],
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "layout.openingM",
+   "expected": [
+    1.6,
+    0.9
+   ],
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "layout.dpPerModelMetre",
+   "expected": 750,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "asset.url",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Resolve the current asset binding from the selected data record.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-model",
+   "property": "bindings",
+   "expected": {
+    "assetId": "frame-<style> (gallery | neon | wa | portal | moss | cosmos)",
+    "showState": "showState",
+    "alignMode": "alignMode"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "parent",
+   "expected": "align-body",
+   "actual": "align-body",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "content",
+   "expected": null,
+   "actual": "\u628a\u64ad\u653e\u5668\u653e\u8fdb\u6846\u91cc",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "textStyle.sizeSp",
+   "expected": 20,
+   "actual": 20,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "textStyle.lineHeightSp",
+   "expected": 26,
+   "actual": 26,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "textStyle.weight",
+   "expected": 600,
+   "actual": 600,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-title",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelPrimary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "parent",
+   "expected": "align-steps",
+   "actual": "align-steps",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "content",
+   "expected": null,
+   "actual": "1  \u628a\u64ad\u653e\u5668\u7a97\u53e3\u62d6\u8fdb\u6846\u4e2d\u95f4\u3002",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "textStyle.sizeSp",
+   "expected": 14,
+   "actual": 14,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "textStyle.lineHeightSp",
+   "expected": 18,
+   "actual": 18,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "textStyle.weight",
+   "expected": 500,
+   "actual": 500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step1",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelPrimary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "parent",
+   "expected": "align-steps",
+   "actual": "align-steps",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "content",
+   "expected": null,
+   "actual": "2  \u62d6\u52a8\u8fd9\u4e2a\u6846\u7684\u4e00\u89d2\u6765\u7f29\u653e\uff0c\u6bd4\u4f8b\u4e0d\u53d8\u3002",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "textStyle.sizeSp",
+   "expected": 14,
+   "actual": 14,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "textStyle.lineHeightSp",
+   "expected": 18,
+   "actual": 18,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "textStyle.weight",
+   "expected": 500,
+   "actual": 500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-step2",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelPrimary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "parent",
+   "expected": "align-steps",
+   "actual": "align-steps",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "content",
+   "expected": null,
+   "actual": "\u79c1\u4eba\u5f71\u9662\u770b\u4e0d\u5230\u522b\u7684\u5e94\u7528\u7684\u7a97\u53e3\uff0c\u6240\u4ee5\u8fd9\u4e00\u6b65\u8981\u624b\u52a8\u505a\u4e00\u6b21\u3002",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "textStyle.sizeSp",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "textStyle.lineHeightSp",
+   "expected": 16,
+   "actual": 16,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "textStyle.weight",
+   "expected": 500,
+   "actual": 500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-note",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelTertiary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "parent",
+   "expected": "align-body",
+   "actual": "align-body",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-steps",
+   "property": "layout.gapDp.rowGap",
+   "expected": 6,
+   "actual": 6,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "component",
+   "expected": "sui-button",
+   "actual": "sui-button",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "parent",
+   "expected": "align-actions",
+   "actual": "align-actions",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "content",
+   "expected": null,
+   "actual": "\u5b8c\u6210",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "props.leading-icon",
+   "expected": "ic_check",
+   "actual": "ic_check",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "props.size.configuration",
+   "expected": "regular",
+   "actual": "regular",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-done",
+   "property": "events",
+   "expected": {
+    "click-action": "leave-align-mode"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "parent",
+   "expected": "align-body",
+   "actual": "align-body",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "layout.mode.direction",
+   "expected": "row",
+   "actual": "row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "layout.justify",
+   "expected": "flex-end",
+   "actual": "flex-end",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-actions",
+   "property": "layout.gapDp.columnGap",
+   "expected": 8,
+   "actual": 8,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "parent",
+   "expected": "align-panel",
+   "actual": "align-panel",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.widthDp",
+   "expected": 640,
+   "actual": 640,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.gapDp.rowGap",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.paddingDp.top",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.paddingDp.right",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.paddingDp.bottom",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-body",
+   "property": "layout.paddingDp.left",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "component",
+   "expected": "sui-attachment-panel",
+   "actual": "sui-attachment-panel",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "parent",
+   "expected": "vol-root",
+   "actual": "vol-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.enter-align-mode"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "props.background",
+   "expected": "material",
+   "actual": "material",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-panel",
+   "property": "bindings",
+   "expected": {
+    "hidden": "alignMode == off"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "vol-root",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "vol-root",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "vol-root",
+   "property": "layout.mode",
+   "expected": "stack",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "vol-root",
+   "property": "layout.sizing",
+   "expected": "matchParent",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "vol-root",
+   "property": "layout.note",
+   "expected": "Volume content root; 3D scene children are positioned in the Volume, the align panel is a scene attachment",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "parent",
+   "expected": "ctl-head",
+   "actual": "ctl-head",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "layout.widthDp",
+   "expected": 48,
+   "actual": 48,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "layout.heightDp",
+   "expected": 48,
+   "actual": 48,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "layout.radiusDp",
+   "expected": 12,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "asset.loaded",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-icon",
+   "property": "asset.url",
+   "expected": "http://127.0.0.1:8792/assets/app-icon.svg",
+   "actual": "http://127.0.0.1:8792/assets/app-icon.svg",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Resource identity only; inline artwork and native compatibility require review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "parent",
+   "expected": "ctl-head-copy",
+   "actual": "ctl-head-copy",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "content",
+   "expected": null,
+   "actual": "\u79c1\u4eba\u5f71\u9662",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "textStyle.sizeSp",
+   "expected": 20,
+   "actual": 20,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "textStyle.lineHeightSp",
+   "expected": 26,
+   "actual": 26,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "textStyle.weight",
+   "expected": 600,
+   "actual": 600,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-title",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelPrimary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "parent",
+   "expected": "ctl-head-copy",
+   "actual": "ctl-head-copy",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "content",
+   "expected": null,
+   "actual": "\u5bf9\u9f50\u6a21\u5f0f",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "textStyle.sizeSp",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "textStyle.lineHeightSp",
+   "expected": 16,
+   "actual": 16,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "textStyle.weight",
+   "expected": 500,
+   "actual": 500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelTertiary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-status",
+   "property": "bindings",
+   "expected": {
+    "content": "status text for the current show state (status.up / opening / showing / closing / align)"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "parent",
+   "expected": "ctl-head",
+   "actual": "ctl-head",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "layout.gapDp.rowGap",
+   "expected": 2,
+   "actual": 2,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head-copy",
+   "property": "layout.grow",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "parent",
+   "expected": "ctl-root",
+   "actual": "ctl-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "layout.mode.direction",
+   "expected": "row",
+   "actual": "row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "layout.gapDp.columnGap",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-head",
+   "property": "layout.align",
+   "expected": "center",
+   "actual": "center",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "component",
+   "expected": "sui-segment-control",
+   "actual": "sui-segment-control",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "parent",
+   "expected": "ctl-root",
+   "actual": "ctl-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "props.options",
+   "expected": "Show,Settings",
+   "actual": "\u653e\u6620,\u8bbe\u7f6e",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "props.selected-index",
+   "expected": 0,
+   "actual": "1",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "props.custom-width",
+   "expected": 432,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-tabs",
+   "property": "events",
+   "expected": {
+    "select": "switch-panel-page"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-label",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-label",
+   "property": "parent",
+   "expected": "page-show",
+   "actual": "page-show",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-label",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-label",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-img",
+   "property": "parent",
+   "expected": "style-gallery",
+   "actual": "style-gallery",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-gallery-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-name",
+   "property": "parent",
+   "expected": "style-gallery",
+   "actual": "style-gallery",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-gallery-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-gallery",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-gallery",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-img",
+   "property": "parent",
+   "expected": "style-neon",
+   "actual": "style-neon",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-neon-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-name",
+   "property": "parent",
+   "expected": "style-neon",
+   "actual": "style-neon",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-neon-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-neon",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-neon",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-img",
+   "property": "parent",
+   "expected": "style-wa",
+   "actual": "style-wa",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-wa-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-name",
+   "property": "parent",
+   "expected": "style-wa",
+   "actual": "style-wa",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-wa-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-wa",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-wa",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-img",
+   "property": "parent",
+   "expected": "style-portal",
+   "actual": "style-portal",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-portal-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-name",
+   "property": "parent",
+   "expected": "style-portal",
+   "actual": "style-portal",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-portal-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-portal",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-portal",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-img",
+   "property": "parent",
+   "expected": "style-moss",
+   "actual": "style-moss",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-moss-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-name",
+   "property": "parent",
+   "expected": "style-moss",
+   "actual": "style-moss",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-moss-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-moss",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-moss",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-img",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-img",
+   "property": "parent",
+   "expected": "style-cosmos",
+   "actual": "style-cosmos",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-img",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-cosmos-img",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-name",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-name",
+   "property": "parent",
+   "expected": "style-cosmos",
+   "actual": "style-cosmos",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos-name",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-cosmos-name",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos",
+   "property": "parent",
+   "expected": "style-grid",
+   "actual": "style-grid",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-cosmos",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-cosmos",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-grid",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-grid",
+   "property": "parent",
+   "expected": "page-show",
+   "actual": "page-show",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-grid",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-grid",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-desc",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-desc",
+   "property": "parent",
+   "expected": "page-show",
+   "actual": "page-show",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "style-desc",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "style-desc",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "component",
+   "expected": "sui-button",
+   "actual": "sui-button",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "parent",
+   "expected": "show-row",
+   "actual": "show-row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "show-toggle",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "component",
+   "expected": "sui-switch",
+   "actual": "sui-switch",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "parent",
+   "expected": "auto-item",
+   "actual": "auto-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "slot",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "slot.assigned",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "auto-switch",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "component",
+   "expected": "sui-list-item",
+   "actual": "sui-list-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "parent",
+   "expected": "show-row",
+   "actual": "show-row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "auto-item",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-row",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-row",
+   "property": "parent",
+   "expected": "page-show",
+   "actual": "page-show",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "show-row",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "show-row",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "component",
+   "expected": "sui-button",
+   "actual": "sui-button",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "parent",
+   "expected": "page-show",
+   "actual": "page-show",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "align-btn",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-show",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-show",
+   "property": "parent",
+   "expected": "ctl-root",
+   "actual": "ctl-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-show",
+   "property": "visible",
+   "expected": false,
+   "actual": false,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "page-show",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "component",
+   "expected": "sui-list-item",
+   "actual": "sui-list-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.custom-width",
+   "expected": 432,
+   "actual": 432,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.content-padding.Top",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.content-padding.Right",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.content-padding.Bottom",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.content-padding.Left",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.leading-icon",
+   "expected": "ic_playback_timer_fill",
+   "actual": "ic_playback_timer_fill",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.headline",
+   "expected": "Sleep timer",
+   "actual": "\u7761\u7720\u8ba1\u65f6",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-item",
+   "property": "props.supporting",
+   "expected": "When it ends the frame lights come back and sound fades. Your player keeps playing.",
+   "actual": "\u5230\u70b9\u540e\u6846\u706f\u4eae\u8d77\u3001\u58f0\u97f3\u6de1\u51fa\uff0c\u64ad\u653e\u5668\u4e0d\u53d7\u5f71\u54cd\u3002",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "component",
+   "expected": "sui-segment-control",
+   "actual": "sui-segment-control",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "props.options",
+   "expected": "Off,60 min,90 min,120 min",
+   "actual": "\u5173,60 \u5206\u949f,90 \u5206\u949f,120 \u5206\u949f",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "props.selected-index",
+   "expected": 0,
+   "actual": "0",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "props.custom-width",
+   "expected": 432,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "timer-seg",
+   "property": "events",
+   "expected": {
+    "select": "set-sleep-timer"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "component",
+   "expected": "sui-switch",
+   "actual": "sui-switch",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "parent",
+   "expected": "sound-item",
+   "actual": "sound-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "slot",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "slot.assigned",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "sound-switch",
+   "property": "events",
+   "expected": {
+    "checked-change": "toggle-ambience"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "component",
+   "expected": "sui-list-item",
+   "actual": "sui-list-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.custom-width",
+   "expected": 432,
+   "actual": 432,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.content-padding.Top",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.content-padding.Right",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.content-padding.Bottom",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.content-padding.Left",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.leading-icon",
+   "expected": "ic_film",
+   "actual": "ic_film",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.headline",
+   "expected": "Style ambience sound",
+   "actual": "\u98ce\u683c\u73af\u5883\u58f0",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-item",
+   "property": "props.supporting",
+   "expected": "Each style has its own: room tone, city rain, roof rain, synth pad, forest stream, space drone",
+   "actual": "\u6bcf\u79cd\u98ce\u683c\u4e00\u6bb5\uff1a\u5c55\u5385\u5e95\u566a\u3001\u57ce\u5e02\u96e8\u3001\u5c4b\u6a90\u96e8\u3001\u5408\u6210\u5668\u3001\u6eaa\u6d41\u3001\u6df1\u7a7a",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "component",
+   "expected": "sui-slider",
+   "actual": "sui-slider",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "props.value",
+   "expected": 0.3,
+   "actual": "0.3",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "props.semantic-label.configuration",
+   "expected": "Ambience volume",
+   "actual": "Ambience volume",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "sound-vol",
+   "property": "events",
+   "expected": {
+    "value-change": "set-ambience-volume"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "component",
+   "expected": "sui-button",
+   "actual": "sui-button",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "parent",
+   "expected": "lang-item",
+   "actual": "lang-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "slot",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "slot.assigned",
+   "expected": "trailing",
+   "actual": "trailing",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "content",
+   "expected": null,
+   "actual": "\u8ddf\u968f\u7cfb\u7edf",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "props.size.configuration",
+   "expected": "small",
+   "actual": "small",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "props.trailing-icon",
+   "expected": "ic_arrow_down",
+   "actual": "ic_arrow_down",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-btn",
+   "property": "events",
+   "expected": {
+    "click-action": "open-language-menu"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "component",
+   "expected": "sui-list-item",
+   "actual": "sui-list-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.custom-width",
+   "expected": 432,
+   "actual": 432,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.content-padding.Top",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.content-padding.Right",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.content-padding.Bottom",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.content-padding.Left",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.leading-icon",
+   "expected": "ic_globe",
+   "actual": "ic_globe",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-item",
+   "property": "props.headline",
+   "expected": "Language",
+   "actual": "\u8bed\u8a00",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": "set-list",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "content",
+   "expected": null,
+   "actual": "\u79c1\u4eba\u5f71\u9662\u53ea\u88c5\u9970\u64ad\u653e\u5668\u56db\u5468\uff0c\u4e0d\u80fd\u8c03\u6697\u623f\u95f4\uff0c\u4e5f\u4e0d\u80fd\u63a7\u5236\u522b\u7684\u5e94\u7528\u3002",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "textStyle.sizeSp",
+   "expected": 12,
+   "actual": 12,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "textStyle.lineHeightSp",
+   "expected": 16,
+   "actual": 16,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "textStyle.weight",
+   "expected": 500,
+   "actual": 500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "limits-note",
+   "property": "textStyle.color",
+   "expected": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "actual": [
+    0,
+    0,
+    0,
+    166
+   ],
+   "status": "match",
+   "tolerance": 0,
+   "reason": "Declared color: labelTertiary",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "component",
+   "expected": "sui-menu",
+   "actual": "sui-menu",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "parent",
+   "expected": "set-list",
+   "actual": null,
+   "status": "mismatch",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "visible",
+   "expected": null,
+   "actual": false,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-menu",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "parent",
+   "expected": "page-settings",
+   "actual": "page-settings",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "layout.gapDp.rowGap",
+   "expected": 8,
+   "actual": 8,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "layout.grow",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "set-list",
+   "property": "layout.overflow",
+   "expected": "auto",
+   "actual": "auto",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "component",
+   "expected": "sui-button",
+   "actual": "sui-button",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "parent",
+   "expected": "exit-row",
+   "actual": "exit-row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.exit-app"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "content",
+   "expected": null,
+   "actual": "\u9000\u51fa\u79c1\u4eba\u5f71\u9662",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Dynamic or post-action content needs a Spec/data-based scenario expectation or author review.",
+   "source": "actions.exit-app"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "props.leading-icon",
+   "expected": "ic_arrow_exit_door",
+   "actual": "ic_arrow_exit_door",
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Unsupported or semantic parameter; requires author review.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "props.size.configuration",
+   "expected": "regular",
+   "actual": "regular",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-btn",
+   "property": "events",
+   "expected": {
+    "click-action": "exit-app"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "parent",
+   "expected": "page-settings",
+   "actual": "page-settings",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "layout.mode.direction",
+   "expected": "row",
+   "actual": "row",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "exit-row",
+   "property": "layout.justify",
+   "expected": "flex-end",
+   "actual": "flex-end",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "parent",
+   "expected": "ctl-root",
+   "actual": "ctl-root",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "visible",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "actions.switch-panel-page"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "layout.gapDp.rowGap",
+   "expected": 14,
+   "actual": 14,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "layout.grow",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "page-settings",
+   "property": "bindings",
+   "expected": {
+    "hidden": "panelPage != Settings"
+   },
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Declared relationships/parts/behavior need scenario or author review; not executed by this script.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "visible",
+   "expected": null,
+   "actual": true,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.mode.display",
+   "expected": "flex",
+   "actual": "flex",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.mode.direction",
+   "expected": "column",
+   "actual": "column",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.paddingDp.top",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.paddingDp.right",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.paddingDp.bottom",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.paddingDp.left",
+   "expected": 24,
+   "actual": 24,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.gapDp.rowGap",
+   "expected": 16,
+   "actual": 16,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "layout.height",
+   "expected": "fill",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Layout relationship requires author review; not a measured fixed value.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "component",
+   "expected": "sui-menu-item",
+   "actual": "sui-menu-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "parent",
+   "expected": "lang-menu",
+   "actual": "lang-menu",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "visible",
+   "expected": null,
+   "actual": false,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-sys",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "component",
+   "expected": "sui-menu-item",
+   "actual": "sui-menu-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "parent",
+   "expected": "lang-menu",
+   "actual": "lang-menu",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "visible",
+   "expected": null,
+   "actual": false,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-zh",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "element.count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "component",
+   "expected": "sui-menu-item",
+   "actual": "sui-menu-item",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "component.registered",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "component.initialized",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "parent",
+   "expected": "lang-menu",
+   "actual": "lang-menu",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "visible",
+   "expected": null,
+   "actual": false,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Provide a scenario expectation or review visibility manually.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "lang-en",
+   "property": "rendered-content",
+   "expected": null,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Hidden now: geometry, text, assets and styles must be checked after opening.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.shell-count",
+   "expected": 1,
+   "actual": 1,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.shell",
+   "expected": "sui-volume",
+   "actual": "sui-volume",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.root-contained",
+   "expected": true,
+   "actual": true,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.unit",
+   "expected": "dp",
+   "actual": "dp",
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.width.declared",
+   "expected": 2550,
+   "actual": 2550,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.height.declared",
+   "expected": 1500,
+   "actual": 1500,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.depth.declared",
+   "expected": 450,
+   "actual": 450,
+   "status": "match",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.width.rendered",
+   "expected": 2550,
+   "actual": 2550,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.height.rendered",
+   "expected": 1500,
+   "actual": 1500,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "frame-volume",
+   "property": "surface.native-depth",
+   "expected": 450,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Depth declaration only; schematic bounds do not verify native depth or clipping.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.width",
+   "expected": 480,
+   "actual": 480,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.height",
+   "expected": 720,
+   "actual": 720,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.owner",
+   "expected": "vol-root",
+   "actual": null,
+   "status": "mismatch",
+   "tolerance": 0,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.gapDp",
+   "expected": 60,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.align",
+   "expected": 1774,
+   "actual": 1774,
+   "status": "match",
+   "tolerance": 1,
+   "reason": "",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.depthDp",
+   "expected": 0,
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "Web depth is a simulation, not native spatial evidence.",
+   "source": "spec"
+  },
+  {
+   "nodeId": "ctl-root",
+   "property": "surface.windowBackground",
+   "expected": "material",
+   "actual": null,
+   "status": "unverified",
+   "tolerance": 0,
+   "reason": "No supported window shell adapter.",
+   "source": "spec"
+  }
+ ],
+ "limitations": [
+  "Only reported fields were checked; omitted design facts need author review.",
+  "Visibility is rendered presence, not proof against clipping/occlusion.",
+  "No native fidelity, full state-machine, screenshot or untouched-default audit."
+ ]
+}

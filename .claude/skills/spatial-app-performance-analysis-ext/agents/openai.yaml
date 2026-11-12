@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "Spatial App Performance Analysis Extension"
+  short_description: "为 Spatial 性能分析增加 RenderDoc Vulkan 与 Perfetto 联合验证"
+  default_prompt: "使用 Spatial App Performance Analysis Extension 分析 RenderDoc XML 与 Perfetto/FastPerf 数据，生成带证据边界和 A/B 建议的联合 HTML 报告。"

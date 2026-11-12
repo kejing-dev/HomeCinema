@@ -1,0 +1,1385 @@
+{
+ "schemaVersion": "write-spec-draft-1",
+ "metadata": {
+  "projectName": "Home Cinema",
+  "revision": 4,
+  "preview": "preview.html",
+  "languages": [
+   "en",
+   "zh-CN"
+  ],
+  "references": [
+   {
+    "path": "runtime/components.js",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "3d8c170c893c5813436c62ad7dc2ef6023f5aa8753aa9982dba50d406a9ab160"
+   },
+   {
+    "path": "runtime/tokens.css",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "cd316672ea73a2f386a6ce9fb8a39d5456c3b4f88e772ddfd5aed5fbbd2cf3c0"
+   },
+   {
+    "path": "runtime/tokens.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "8788c7ae95d02eca1827cf42b0688aa6b12de57706a97dce1d7f79becee4b0bd"
+   },
+   {
+    "path": "runtime/color-roles.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot",
+    "sha256": "3888822c83b7f287d6c4e18bcbf9ec6cc7ce38db5012caf5e42a8df96461bf3f"
+   }
+  ]
+ },
+ "experience": {
+  "subject": "A cinema frame that decorates around whatever video the user is already watching in another app (system player, PICO Video, browser): five ambient wall-treatment styles in real materials (Walnut Gallery, Béton, Linen Room, Smoked Oak, Bronze Line): low saturation, low brightness, no neon or glow, each with a soft light that fades during the show and an optional quiet ambience, with show lighting that follows the sound and a sleep timer. It does not play video, dim the room or control other apps.",
+  "form": "Shared Space only. A hollow 3D Volume (one of five ambient 3D wall-treatment styles) plus a small Planar controls window to its right. No Stage, because Stage forces Full Space, which hides other apps and stops their playback (verified on emulator, see feasibility.md)."
+ },
+ "theme": {
+  "brandColors": {}
+ },
+ "surfaces": [
+  {
+   "id": "frame-volume",
+   "type": "volume",
+   "defaultSize": {
+    "width": 2550,
+    "height": 1500,
+    "depth": 450,
+    "unit": "dp"
+   },
+   "rootNodeId": "vol-root",
+   "purpose": "Main window. Transparent (no material background, base panel hidden), uniform resize only so the 16:9 opening keeps its shape. The user aligns it around the other app's player window by hand; Home Cinema cannot read other windows' poses. No recenter or bring-to-front promise."
+  },
+  {
+   "id": "controls-window",
+   "type": "planar",
+   "defaultSize": {
+    "width": 480,
+    "height": 720,
+    "unit": "dp"
+   },
+   "rootNodeId": "ctl-root",
+   "windowBackground": "material",
+   "ownerSurfaceId": "frame-volume",
+   "initiallyVisible": true,
+   "placement": {
+    "side": "end",
+    "align": "bottom",
+    "gapDp": 60,
+    "depthDp": 0
+   },
+   "purpose": "Controls beside the frame (Placement.right of the Volume); never over the opening."
+  }
+ ],
+ "initialStateId": "lights-up",
+ "states": [
+  {
+   "id": "lights-up",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "style": "walnut",
+    "showState": "up",
+    "alignMode": "off",
+    "panelPage": "Show",
+    "autoShow": true,
+    "sleepTimer": "Off",
+    "ambience": false,
+    "language": "Follow system"
+   }
+  },
+  {
+   "id": "first-launch-align",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "alignMode": "on"
+   },
+   "note": "Shown automatically on first launch, then only from Align frame to player"
+  },
+  {
+   "id": "showing",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "showState": "showing"
+   }
+  },
+  {
+   "id": "settings",
+   "surfaceRoots": {
+    "frame-volume": "vol-root",
+    "controls-window": "ctl-root"
+   },
+   "values": {
+    "panelPage": "Settings"
+   }
+  }
+ ],
+ "actions": [
+  {
+   "id": "choose-style",
+   "purpose": "Loads the selected style's GLB (Walnut Gallery, Béton, Linen Room, Smoked Oak, Bronze Line) into the Volume with a 1.2 s cross-fade, switches its soft light (the one emit_* material: a baked wash or a hidden LED line) and ambience loop, updates the style line; remembered across launches."
+  },
+  {
+   "id": "toggle-show",
+   "purpose": "Manual fallback. Start the show: Opening (the frame's soft light fades to 12 % over 4 s, ambience fades in) then Showing. End the show: Closing (soft light back to 100 % over 6 s, ambience fades out) then Lights up. Only our own frame lights change; the room is not dimmed."
+  },
+  {
+   "id": "toggle-auto-show",
+   "purpose": "When on (default), polls AudioManager.isMusicActive every 1 s: inactive to active starts the show; 8 s of continuous inactivity ends it. A manual press overrides auto until the next state change from sound."
+  },
+  {
+   "id": "enter-align-mode",
+   "purpose": "Shows the alignment outline and the align panel; the system window handles of the Volume are highlighted; the soft light stays up so the opening is easy to see."
+  },
+  {
+   "id": "leave-align-mode",
+   "purpose": "Hides the alignment aids. The Volume keeps the size and position the user set (the system restores it on next launch where supported)."
+  },
+  {
+   "id": "set-sleep-timer",
+   "purpose": "Off / 60 / 90 / 120 min. On expiry runs End the show and stops ambience; it never pauses or closes the other app. A small remaining-time line appears under the status text while active."
+  },
+  {
+   "id": "toggle-ambience",
+   "purpose": "Plays the selected style's looped ambience during Opening and Showing only; off by default."
+  },
+  {
+   "id": "set-ambience-volume",
+   "purpose": "Sets ambience volume 0-1 (default 0.3)."
+  },
+  {
+   "id": "switch-panel-page",
+   "purpose": "Shows the Show or Settings page in the controls window."
+  },
+  {
+   "id": "open-language-menu",
+   "purpose": "Opens the language menu anchored to the language button."
+  },
+  {
+   "id": "choose-language",
+   "purpose": "Applies Follow system / Simplified Chinese / English to all strings immediately and persists it."
+  },
+  {
+   "id": "exit-app",
+   "purpose": "Finishes the activity and closes the frame Volume and the controls window."
+  }
+ ],
+ "nodes": [
+  {
+   "id": "align-outline",
+   "kind": "domain_visual",
+   "rendererKey": "align-outline",
+   "purpose": "3D model: Alignment guide: glowing dashed outline of the opening shown only in Align mode",
+   "layout": {
+    "xDp": 675,
+    "yDp": 412,
+    "widthDp": 1200,
+    "heightDp": 676
+   },
+   "designNotes": {
+    "represents": "Alignment guide: glowing dashed outline of the opening shown only in Align mode",
+    "previewRepresentation": "CSS dashed border",
+    "assetStatus": "to-create",
+    "behaviors": [
+     "Shown while Align mode is on"
+    ]
+   },
+   "bindings": {
+    "hidden": "alignMode == off"
+   }
+  },
+  {
+   "id": "frame-model",
+   "kind": "domain_visual",
+   "rendererKey": "frame-style-model",
+   "purpose": "3D model: The selected wall treatment as one 3D model (GLB, metres) filling the Volume around a 1.64 x 0.94 m hollow 16:9 opening; five ambient styles: Walnut Gallery, Béton, Linen Room, Smoked Oak, Bronze Line",
+   "layout": {
+    "sizing": "matchParent",
+    "modelExtentM": [
+     3.4,
+     2.0,
+     0.6
+    ],
+    "openingM": [
+     1.6,
+     0.9
+    ],
+    "dpPerModelMetre": 750
+   },
+   "assetId": "frame-walnut",
+   "bindings": {
+    "assetId": "frame-<style> (walnut | beton | linen | slats | bronze)",
+    "showState": "showState",
+    "alignMode": "alignMode"
+   },
+   "designNotes": {
+    "represents": "The selected wall treatment as one 3D model (GLB, metres) filling the Volume around a 1.64 x 0.94 m hollow 16:9 opening; five ambient styles: Walnut Gallery, Béton, Linen Room, Smoked Oak, Bronze Line",
+    "previewRepresentation": "Transparent orthographic renders of the actual GLB (lights-up and showing variants), cross-faded by show state",
+    "assetStatus": "available",
+    "assetId": "frame-walnut",
+    "appearance": [
+     "Walnut Gallery: charcoal limewash wall panel, walnut shadow-box frame (4 members, grain along each), dark linen slip, 6 mm brass hairline, walnut ledge with a stoneware vase and art books (Tripo)",
+     "Béton: board-formed concrete panel with tie holes, 14 cm chamfered concrete reveal, concrete stub shelf with a travertine pebble sculpture (Tripo)",
+     "Linen Room: fabric-wrapped acoustic tiles in dark greige linen, walnut trim, a warm LED line under the top trim, walnut ledges with a linen-shade lamp and books (Tripo)",
+     "Smoked Oak: vertical smoked-oak slats on black felt, matte black steel sight frame, faint neutral bias light on the felt, small shelf with a stoneware vase (Tripo)",
+     "Bronze Line: black linen museum mat and a 3 cm darkened-bronze frame, nothing else"
+    ],
+    "behaviors": [
+     "Opening is hollow with no geometry and no collider, so rays reach the other app's window behind it",
+     "Each style has one material whose name starts with emit_ (a soft wash baked as an emissive map, or a hidden LED line): its emissive intensity follows the show state (Lights up 100 %, Showing 12 %, Opening 4 s / Closing 6 s ease)",
+     "No saturated colour and no bloom: frame mean chroma C* <= 8 and mean L* <= player L* - 15 in the Showing state (design-tools/ambient_check.py)",
+     "Switching style cross-fades over 1.2 s and switches the ambience loop; the choice is remembered",
+     "Uniform resize only; the model is scaled to the Volume (750 dp per model metre at the default size)"
+    ],
+    "previewLimitations": [
+     "Renders are lit by a neutral room environment and one key light; on device the passthrough room is not dimmed",
+     "Props are Tripo meshes decimated to 2.5k-3.5k triangles with 512 px textures, desaturated for the ambient look"
+    ]
+   },
+   "children": [
+    "align-outline"
+   ]
+  },
+  {
+   "id": "align-title",
+   "kind": "text",
+   "content": "Fit your player into the frame",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Fit your player into the frame",
+     "zh": "把播放器放进框里",
+     "key": "align.title"
+    }
+   }
+  },
+  {
+   "id": "align-step1",
+   "kind": "text",
+   "content": "1  Drag your player window into the opening.",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "1  Drag your player window into the opening.",
+     "zh": "1  把播放器窗口拖进框中间。",
+     "key": "align.s1"
+    }
+   }
+  },
+  {
+   "id": "align-step2",
+   "kind": "text",
+   "content": "2  Drag a corner of this frame to resize it. It keeps its shape.",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "2  Drag a corner of this frame to resize it. It keeps its shape.",
+     "zh": "2  拖动这个框的一角来缩放，比例不变。",
+     "key": "align.s2"
+    }
+   }
+  },
+  {
+   "id": "align-note",
+   "kind": "text",
+   "content": "Home Cinema can't see other apps' windows, so this is done by hand once.",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema can't see other apps' windows, so this is done by hand once.",
+     "zh": "私人影院看不到别的应用的窗口，所以这一步要手动做一次。",
+     "key": "align.note"
+    }
+   }
+  },
+  {
+   "id": "align-steps",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 6
+   },
+   "children": [
+    "align-step1",
+    "align-step2",
+    "align-note"
+   ]
+  },
+  {
+   "id": "align-done",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Done",
+    "leading-icon": "ic_check",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Done",
+     "zh": "完成",
+     "key": "align.done"
+    }
+   },
+   "events": {
+    "click-action": "leave-align-mode"
+   }
+  },
+  {
+   "id": "align-actions",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "justify": "end",
+    "gapDp": 8
+   },
+   "children": [
+    "align-done"
+   ]
+  },
+  {
+   "id": "align-body",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "widthDp": 640,
+    "gapDp": 12,
+    "paddingDp": 24
+   },
+   "children": [
+    "align-title",
+    "align-steps",
+    "align-actions"
+   ]
+  },
+  {
+   "id": "align-panel",
+   "kind": "spatialui",
+   "component": "sui-attachment-panel",
+   "props": {
+    "background": "material"
+   },
+   "designNotes": {
+    "relationship": "Inside the Volume, centred under the opening, only while Align mode is on",
+    "followBehavior": "Fixed to the frame; scales with the Volume when the user resizes it"
+   },
+   "children": [
+    "align-body"
+   ],
+   "bindings": {
+    "hidden": "alignMode == off"
+   }
+  },
+  {
+   "id": "vol-root",
+   "kind": "layout",
+   "layout": {
+    "mode": "stack",
+    "sizing": "matchParent",
+    "note": "Volume content root; 3D scene children are positioned in the Volume, the align panel is a scene attachment"
+   },
+   "children": [
+    "frame-model",
+    "align-panel"
+   ]
+  },
+  {
+   "id": "ctl-icon",
+   "kind": "media",
+   "assetId": "app-icon",
+   "layout": {
+    "widthDp": 48,
+    "heightDp": 48,
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "ctl-title",
+   "kind": "text",
+   "content": "Home Cinema",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema",
+     "zh": "私人影院",
+     "key": "app.name"
+    }
+   }
+  },
+  {
+   "id": "ctl-status",
+   "kind": "text",
+   "content": "Lights up · waiting for sound",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Lights up · waiting for sound",
+     "zh": "灯亮着 · 等待开播",
+     "key": "status.up"
+    }
+   },
+   "bindings": {
+    "content": "status text for the current show state (status.up / opening / showing / closing / align)"
+   }
+  },
+  {
+   "id": "ctl-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2,
+    "grow": 1
+   },
+   "children": [
+    "ctl-title",
+    "ctl-status"
+   ]
+  },
+  {
+   "id": "ctl-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 12,
+    "align": "center"
+   },
+   "children": [
+    "ctl-icon",
+    "ctl-head-copy"
+   ]
+  },
+  {
+   "id": "ctl-tabs",
+   "kind": "spatialui",
+   "component": "sui-segment-control",
+   "props": {
+    "options": "Show,Settings",
+    "selected-index": 0,
+    "custom-width": 432
+   },
+   "localizedText": {
+    "options": {
+     "en": "Show,Settings",
+     "zh": "放映,设置",
+     "key": "tabs"
+    }
+   },
+   "events": {
+    "select": "switch-panel-page"
+   }
+  },
+  {
+   "id": "style-label",
+   "kind": "text",
+   "content": "Frame style",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Frame style",
+     "zh": "框的风格",
+     "key": "style.label"
+    }
+   }
+  },
+  {
+   "id": "style-walnut-img",
+   "kind": "media",
+   "assetId": "style-walnut",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-walnut-name",
+   "kind": "text",
+   "content": "Walnut Gallery",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Walnut Gallery",
+     "zh": "胡桃画廊",
+     "key": "st.walnut"
+    }
+   }
+  },
+  {
+   "id": "style-walnut",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == walnut"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-walnut-img",
+    "style-walnut-name"
+   ]
+  },
+  {
+   "id": "style-beton-img",
+   "kind": "media",
+   "assetId": "style-beton",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-beton-name",
+   "kind": "text",
+   "content": "Béton",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Béton",
+     "zh": "清水混凝土",
+     "key": "st.beton"
+    }
+   }
+  },
+  {
+   "id": "style-beton",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == beton"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-beton-img",
+    "style-beton-name"
+   ]
+  },
+  {
+   "id": "style-linen-img",
+   "kind": "media",
+   "assetId": "style-linen",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-linen-name",
+   "kind": "text",
+   "content": "Linen Room",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Linen Room",
+     "zh": "亚麻软包",
+     "key": "st.linen"
+    }
+   }
+  },
+  {
+   "id": "style-linen",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == linen"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-linen-img",
+    "style-linen-name"
+   ]
+  },
+  {
+   "id": "style-slats-img",
+   "kind": "media",
+   "assetId": "style-slats",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-slats-name",
+   "kind": "text",
+   "content": "Smoked Oak",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Smoked Oak",
+     "zh": "烟熏橡木格栅",
+     "key": "st.slats"
+    }
+   }
+  },
+  {
+   "id": "style-slats",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == slats"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-slats-img",
+    "style-slats-name"
+   ]
+  },
+  {
+   "id": "style-bronze-img",
+   "kind": "media",
+   "assetId": "style-bronze",
+   "layout": {
+    "widthDp": 120,
+    "heightDp": 75,
+    "radiusDp": 10,
+    "fit": "cover"
+   }
+  },
+  {
+   "id": "style-bronze-name",
+   "kind": "text",
+   "content": "Bronze Line",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Bronze Line",
+     "zh": "青铜细框",
+     "key": "st.bronze"
+    }
+   }
+  },
+  {
+   "id": "style-bronze",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 136,
+    "gapDp": 6,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "purpose": "Frame style card (thumbnail is a crop of the style's front render); the selected card shows a 3 dp inner stroke in the interaction colour",
+   "bindings": {
+    "selected": "style == bronze"
+   },
+   "events": {
+    "select": "choose-style"
+   },
+   "children": [
+    "style-bronze-img",
+    "style-bronze-name"
+   ]
+  },
+  {
+   "id": "style-grid",
+   "kind": "layout",
+   "layout": {
+    "mode": "grid",
+    "columns": 3,
+    "gapDp": 12
+   },
+   "children": [
+    "style-walnut",
+    "style-beton",
+    "style-linen",
+    "style-slats",
+    "style-bronze"
+   ]
+  },
+  {
+   "id": "style-desc",
+   "kind": "text",
+   "content": "Walnut frame, linen slip, charcoal wall · quiet room tone",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Walnut frame, linen slip, charcoal wall · quiet room tone",
+     "zh": "胡桃木框、亚麻衬边、炭灰墙 · 安静的室内底噪",
+     "key": "sd.walnut"
+    }
+   },
+   "bindings": {
+    "content": "sd.<style>: the selected style's light and ambience line"
+   }
+  },
+  {
+   "id": "show-toggle",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "text": "Start the show",
+    "leading-icon": "ic_play",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Start the show",
+     "zh": "开场",
+     "key": "show.start"
+    }
+   },
+   "bindings": {
+    "text": "show.start while Lights up or Closing; show.end while Opening or Showing",
+    "leading-icon": "ic_play / ic_sun"
+   },
+   "events": {
+    "click-action": "toggle-show"
+   }
+  },
+  {
+   "id": "auto-switch",
+   "kind": "spatialui",
+   "component": "sui-switch",
+   "props": {
+    "slot": "trailing",
+    "checked": null
+   },
+   "events": {
+    "checked-change": "toggle-auto-show"
+   }
+  },
+  {
+   "id": "auto-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_volume_high",
+    "headline": "Start with the sound",
+    "supporting": "The frame’s soft light fades when your player makes sound and comes back after 8 s of silence"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Start with the sound",
+     "zh": "有声自动开场",
+     "key": "auto.h"
+    },
+    "supporting": {
+     "en": "The frame’s soft light fades when your player makes sound and comes back after 8 s of silence",
+     "zh": "播放器出声时框上的微光渐暗，安静 8 秒后再亮",
+     "key": "auto.s"
+    }
+   },
+   "children": [
+    "auto-switch"
+   ]
+  },
+  {
+   "id": "show-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8
+   },
+   "children": [
+    "show-toggle",
+    "auto-item"
+   ]
+  },
+  {
+   "id": "align-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "text": "Align frame to player",
+    "leading-icon": "ic_expand",
+    "size": "regular",
+    "container-color": "fillTertiary",
+    "content-color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Align frame to player",
+     "zh": "把框对准播放器",
+     "key": "align.open"
+    }
+   },
+   "events": {
+    "click-action": "enter-align-mode"
+   }
+  },
+  {
+   "id": "page-show",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 14,
+    "grow": 1
+   },
+   "children": [
+    "style-label",
+    "style-grid",
+    "style-desc",
+    "show-row",
+    "align-btn"
+   ],
+   "bindings": {
+    "hidden": "panelPage != Show"
+   }
+  },
+  {
+   "id": "timer-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_playback_timer_fill",
+    "headline": "Sleep timer",
+    "supporting": "When it ends the frame light comes back and sound fades. Your player keeps playing."
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Sleep timer",
+     "zh": "睡眠计时",
+     "key": "timer.h"
+    },
+    "supporting": {
+     "en": "When it ends the frame light comes back and sound fades. Your player keeps playing.",
+     "zh": "到点后框上微光回来、声音淡出，播放器不受影响。",
+     "key": "timer.s"
+    }
+   }
+  },
+  {
+   "id": "timer-seg",
+   "kind": "spatialui",
+   "component": "sui-segment-control",
+   "props": {
+    "options": "Off,60 min,90 min,120 min",
+    "selected-index": 0,
+    "custom-width": 432
+   },
+   "localizedText": {
+    "options": {
+     "en": "Off,60 min,90 min,120 min",
+     "zh": "关,60 分钟,90 分钟,120 分钟",
+     "key": "timer.opts"
+    }
+   },
+   "events": {
+    "select": "set-sleep-timer"
+   }
+  },
+  {
+   "id": "sound-switch",
+   "kind": "spatialui",
+   "component": "sui-switch",
+   "props": {
+    "slot": "trailing"
+   },
+   "events": {
+    "checked-change": "toggle-ambience"
+   }
+  },
+  {
+   "id": "sound-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_film",
+    "headline": "Style ambience sound",
+    "supporting": "Each style has its own: room tone, skylight rain, fireplace, city night. Bronze Line stays silent"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Style ambience sound",
+     "zh": "风格环境声",
+     "key": "sound.h"
+    },
+    "supporting": {
+     "en": "Each style has its own: room tone, skylight rain, fireplace, city night. Bronze Line stays silent",
+     "zh": "每种风格一段：室内底噪、天窗细雨、壁炉、城市夜；青铜细框不配声音",
+     "key": "sound.s"
+    }
+   },
+   "children": [
+    "sound-switch"
+   ]
+  },
+  {
+   "id": "sound-vol",
+   "kind": "spatialui",
+   "component": "sui-slider",
+   "props": {
+    "value": 0.3,
+    "semantic-label": "Ambience volume"
+   },
+   "events": {
+    "value-change": "set-ambience-volume"
+   }
+  },
+  {
+   "id": "lang-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "slot": "trailing",
+    "size": "small",
+    "text": "Follow system",
+    "trailing-icon": "ic_arrow_down"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "lang.sys"
+    }
+   },
+   "events": {
+    "click-action": "open-language-menu"
+   }
+  },
+  {
+   "id": "lang-item",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 432,
+    "content-padding": 12,
+    "leading-icon": "ic_globe",
+    "headline": "Language"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Language",
+     "zh": "语言",
+     "key": "lang.h"
+    }
+   },
+   "children": [
+    "lang-btn"
+   ]
+  },
+  {
+   "id": "limits-note",
+   "kind": "text",
+   "content": "Home Cinema decorates around your player. It can't dim the room or control other apps.",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema decorates around your player. It can't dim the room or control other apps.",
+     "zh": "私人影院只装饰播放器四周，不能调暗房间，也不能控制别的应用。",
+     "key": "limits"
+    }
+   }
+  },
+  {
+   "id": "lang-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {
+    "anchor-node-id": "lang-btn"
+   },
+   "children": [
+    "lang-sys",
+    "lang-zh",
+    "lang-en"
+   ],
+   "bindings": {
+    "hidden": "closed until open-language-menu"
+   }
+  },
+  {
+   "id": "set-list",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "grow": 1,
+    "overflow": "auto"
+   },
+   "children": [
+    "timer-item",
+    "timer-seg",
+    "sound-item",
+    "sound-vol",
+    "lang-item",
+    "lang-menu",
+    "limits-note"
+   ]
+  },
+  {
+   "id": "exit-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Exit Home Cinema",
+    "leading-icon": "ic_arrow_exit_door",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Exit Home Cinema",
+     "zh": "退出私人影院",
+     "key": "exit"
+    }
+   },
+   "events": {
+    "click-action": "exit-app"
+   }
+  },
+  {
+   "id": "exit-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "justify": "end"
+   },
+   "children": [
+    "exit-btn"
+   ]
+  },
+  {
+   "id": "page-settings",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 14,
+    "grow": 1
+   },
+   "children": [
+    "set-list",
+    "exit-row"
+   ],
+   "bindings": {
+    "hidden": "panelPage != Settings"
+   }
+  },
+  {
+   "id": "ctl-root",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "paddingDp": 24,
+    "gapDp": 16,
+    "height": "fill"
+   },
+   "children": [
+    "ctl-head",
+    "ctl-tabs",
+    "page-show",
+    "page-settings"
+   ]
+  },
+  {
+   "id": "lang-sys",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Follow system"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "lang.sys"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-zh",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "简体中文"
+   },
+   "localizedText": {
+    "title": {
+     "en": "简体中文",
+     "zh": "简体中文",
+     "key": "lang.zh"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-en",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "English"
+   },
+   "localizedText": {
+    "title": {
+     "en": "English",
+     "zh": "English",
+     "key": "lang.en"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  }
+ ],
+ "assets": [
+  {
+   "id": "app-icon",
+   "kind": "image",
+   "src": "assets/app-icon.svg",
+   "purpose": "Application icon (original)",
+   "sha256": "00a0b2b7ca2b5898cc382d4a6e95cd8b70d069430ffe8de85e7805185d84a1e5"
+  },
+  {
+   "id": "frame-beton-showing",
+   "kind": "image",
+   "src": "assets/frame-beton-showing.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "8a390679cebd89c450e4442c9212976f3abe44bfc3573fbacee632d0c33a85f2"
+  },
+  {
+   "id": "frame-beton-up",
+   "kind": "image",
+   "src": "assets/frame-beton-up.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "fff7e56a5f2d19e2fa0c663615a318d5d780aa1b01baa25b854f334fe0ef2725"
+  },
+  {
+   "id": "frame-bronze-showing",
+   "kind": "image",
+   "src": "assets/frame-bronze-showing.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "1e47e59cac945b55b3b2e48c76d7e2c990974dacd5d4ba9be70df78c02736e2e"
+  },
+  {
+   "id": "frame-bronze-up",
+   "kind": "image",
+   "src": "assets/frame-bronze-up.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "be15708b5f329722e76e0201472d7064ac4c4ae0a16951d839dd2a5669de628c"
+  },
+  {
+   "id": "frame-linen-showing",
+   "kind": "image",
+   "src": "assets/frame-linen-showing.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "6b2d823dd5d3fe0155b490e09a251ee0030ba6ec874d2f35981fd29a9113b730"
+  },
+  {
+   "id": "frame-linen-up",
+   "kind": "image",
+   "src": "assets/frame-linen-up.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "c01aeb24fb111ae50164efcdf1f1afa43db3cb462a68b17e07f0ea31b4766d5d"
+  },
+  {
+   "id": "frame-slats-showing",
+   "kind": "image",
+   "src": "assets/frame-slats-showing.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "70614f8f059f28580bb50102e5ce14b1d56596d2be5c8f8a1e33e19d80237b78"
+  },
+  {
+   "id": "frame-slats-up",
+   "kind": "image",
+   "src": "assets/frame-slats-up.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "95c46a6a27407ce12a2fdbe132d9357a9a127a0baf6361c845cdbbd2a63f30eb"
+  },
+  {
+   "id": "frame-walnut-showing",
+   "kind": "image",
+   "src": "assets/frame-walnut-showing.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (showing state)",
+   "sha256": "37acf8372c1148bc7f692feae42259c1cfae6679fd8e861f25761989bcd31711"
+  },
+  {
+   "id": "frame-walnut-up",
+   "kind": "image",
+   "src": "assets/frame-walnut-up.webp",
+   "purpose": "Preview-only transparent render of the frame GLB (up state)",
+   "sha256": "45b3863cdfe5b19c0323b7de46dc8b9bbdd4de7e678992fc59533c19b5cd7d13"
+  },
+  {
+   "id": "style-beton",
+   "kind": "image",
+   "src": "assets/style-beton.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "c4d908cc26f92505ecd508158aed74c771b5b312f2446bfcc699c0397734ac3d"
+  },
+  {
+   "id": "style-bronze",
+   "kind": "image",
+   "src": "assets/style-bronze.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "caa444755ecf782241184656ea70f093383814401cd6e152909b86fc5b1b7d1b"
+  },
+  {
+   "id": "style-linen",
+   "kind": "image",
+   "src": "assets/style-linen.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "b9f6ea7471c63d27216f5b3b85732b6c6a45d7c3d5c5a90751f4dfea3e8db6df"
+  },
+  {
+   "id": "style-slats",
+   "kind": "image",
+   "src": "assets/style-slats.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "d94071b9ad94b6c93e69deb9713081c33cdc80428e0b728668de490841a73051"
+  },
+  {
+   "id": "style-walnut",
+   "kind": "image",
+   "src": "assets/style-walnut.jpg",
+   "purpose": "Frame style thumbnail (crop of the style's front render)",
+   "sha256": "046f2a27d46c0a8045f39b6f6a3a29496377c5a4640c3f2870542d6bfe5c1728"
+  },
+  {
+   "id": "frame-beton",
+   "kind": "model",
+   "src": "assets/frames/beton.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR wood / concrete / linen / bronze with 512 px colour + normal maps, one emit_* soft-light material; Tripo props decimated with bin/glb_decimate.py)",
+   "sha256": "053cda6e701475a9e693c3c4ef0e26df1770bd0032f7315913511cd13440d095"
+  },
+  {
+   "id": "frame-bronze",
+   "kind": "model",
+   "src": "assets/frames/bronze.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR wood / concrete / linen / bronze with 512 px colour + normal maps, one emit_* soft-light material; Tripo props decimated with bin/glb_decimate.py)",
+   "sha256": "a37a1b0b5ddd7917985c5fab055fb68e855ed101999f3b1371777ce5c5a691de"
+  },
+  {
+   "id": "frame-linen",
+   "kind": "model",
+   "src": "assets/frames/linen.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR wood / concrete / linen / bronze with 512 px colour + normal maps, one emit_* soft-light material; Tripo props decimated with bin/glb_decimate.py)",
+   "sha256": "c9f3aae2aca4f85e40b6cfce4d2db046e322ff685269e515f20422d5ecd962b6"
+  },
+  {
+   "id": "frame-slats",
+   "kind": "model",
+   "src": "assets/frames/slats.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR wood / concrete / linen / bronze with 512 px colour + normal maps, one emit_* soft-light material; Tripo props decimated with bin/glb_decimate.py)",
+   "sha256": "d2bd13cd85deef13a325e20a63b8f0b8690f57133180c925eb018e9c52940caf"
+  },
+  {
+   "id": "frame-walnut",
+   "kind": "model",
+   "src": "assets/frames/walnut.glb",
+   "purpose": "Frame style 3D model (GLB, metres, PBR wood / concrete / linen / bronze with 512 px colour + normal maps, one emit_* soft-light material; Tripo props decimated with bin/glb_decimate.py)",
+   "sha256": "89c152e3cb1d1076cc9e56ddfe2e60f4a070d2c40136e60ca58e05f15fc2a9b4"
+  }
+ ]
+}

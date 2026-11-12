@@ -1,0 +1,4323 @@
+{
+ "schemaVersion": "write-spec-draft-1",
+ "metadata": {
+  "projectName": "Home Cinema",
+  "revision": 1,
+  "preview": "preview.html",
+  "references": [
+   {
+    "path": "runtime/components.js",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot (AutoEva_SpatialDesignSystem 4b664e8)",
+    "sha256": "3d8c170c893c5813436c62ad7dc2ef6023f5aa8753aa9982dba50d406a9ab160"
+   },
+   {
+    "path": "runtime/tokens.css",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot (AutoEva_SpatialDesignSystem 4b664e8)",
+    "sha256": "cd316672ea73a2f386a6ce9fb8a39d5456c3b4f88e772ddfd5aed5fbbd2cf3c0"
+   },
+   {
+    "path": "runtime/tokens.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot (AutoEva_SpatialDesignSystem 4b664e8)",
+    "sha256": "8788c7ae95d02eca1827cf42b0688aa6b12de57706a97dce1d7f79becee4b0bd"
+   },
+   {
+    "path": "runtime/color-roles.json",
+    "version": "pico-spatial-agentic-tools 0.7.0-beta.2 design-reference snapshot (AutoEva_SpatialDesignSystem 4b664e8)",
+    "sha256": "3888822c83b7f287d6c4e18bcbf9ec6cc7ce38db5012caf5e42a8df96461bf3f"
+   }
+  ],
+  "languages": [
+   "en",
+   "zh-CN"
+  ]
+ },
+ "experience": {
+  "subject": "Browse your own Emby / Jellyfin / WebDAV / headset video library as a wall of 3D layered posters, then watch on a large screen in a virtual theater with resume, subtitles and audio track selection.",
+  "form": "Primarily 3D posters with supporting 2D in a Shared Space Volume (Library); Full Space Stage for playback (Cinema)."
+ },
+ "theme": {
+  "brandColors": {}
+ },
+ "surfaces": [
+  {
+   "id": "library-volume",
+   "type": "volume",
+   "defaultSize": {
+    "width": 1280,
+    "height": 760,
+    "depth": 360,
+    "unit": "dp"
+   },
+   "rootNodeId": "vol-root",
+   "purpose": "Main window in Shared Space; TabBar attached above; no recenter or bring-to-front promise"
+  },
+  {
+   "id": "detail-window",
+   "type": "subwindow",
+   "ownerSurfaceId": "library-volume",
+   "defaultSize": {
+    "width": 360,
+    "height": 760,
+    "unit": "dp"
+   },
+   "rootNodeId": "detail-window",
+   "initiallyVisible": false,
+   "placement": {
+    "side": "end",
+    "align": "top",
+    "gapDp": 24,
+    "depthDp": 0
+   }
+  },
+  {
+   "id": "cinema-stage",
+   "type": "stage",
+   "defaultSize": {
+    "width": 10,
+    "height": 5,
+    "depth": 12,
+    "unit": "m"
+   },
+   "rootNodeId": "scene-cinema",
+   "initiallyVisible": false,
+   "purpose": "Full Space Stage; dark virtual theater (StageStyle.Full) or dimmed passthrough (Mixed); extent describes the authored theater around the user"
+  }
+ ],
+ "initialStateId": "initial",
+ "states": [
+  {
+   "id": "initial",
+   "surfaceRoots": {
+    "library-volume": "vol-root"
+   },
+   "values": {
+    "destination": "Home",
+    "language": "Follow system",
+    "posterDepth": "Standard",
+    "autoResume": true,
+    "sources": [
+     "Demo library"
+    ]
+   }
+  },
+  {
+   "id": "details-open",
+   "surfaceRoots": {
+    "library-volume": "vol-root",
+    "detail-window": "detail-window"
+   },
+   "values": {
+    "selectedTitle": "harbor"
+   }
+  },
+  {
+   "id": "cinema",
+   "surfaceRoots": {
+    "cinema-stage": "scene-cinema"
+   },
+   "values": {
+    "playing": true,
+    "subtitle": "Chinese (SRT)",
+    "audio": "Original · Stereo",
+    "screen": "Medium 6 m",
+    "dimRoom": true
+   }
+  }
+ ],
+ "actions": [
+  {
+   "id": "switch-destination",
+   "purpose": "TabBar selection shows Home, Library, Sources or Settings inside the Library Volume; each destination keeps its scroll position and filter when revisited."
+  },
+  {
+   "id": "open-detail",
+   "purpose": "Selecting a poster or continue-watching card opens the Details Subwindow beside the Volume and fills it with the selected title (backdrop, name, chips, overview, audio, subtitles, episodes for series). Selecting another title replaces the content without closing."
+  },
+  {
+   "id": "close-detail",
+   "purpose": "Closes the Details Subwindow; the Volume keeps its current destination."
+  },
+  {
+   "id": "tilt-poster",
+   "purpose": "Ray, hand-ray or gaze hover tilts the hovered poster up to 8 degrees toward the pointer and widens its layer separation; leaving restores it."
+  },
+  {
+   "id": "enter-cinema",
+   "purpose": "Opens the Full Space cinema Stage and plays the selected title from its saved position (or from 0:00 when none); the Library Volume is hidden while the Stage is open."
+  },
+  {
+   "id": "enter-cinema-from-start",
+   "purpose": "Same as enter-cinema but starts at 0:00 and overwrites the saved position as playback advances."
+  },
+  {
+   "id": "exit-cinema",
+   "purpose": "Saves the playback position, closes the Stage and returns to the Library Volume with the Details Subwindow still showing the title."
+  },
+  {
+   "id": "toggle-playback",
+   "purpose": "Toggles play/pause; the button icon and accessible name switch between Pause and Play."
+  },
+  {
+   "id": "seek-back",
+   "purpose": "Seeks 15 s back."
+  },
+  {
+   "id": "seek-forward",
+   "purpose": "Seeks 15 s forward."
+  },
+  {
+   "id": "seek-to",
+   "purpose": "Seeks to the slider position and updates the time label."
+  },
+  {
+   "id": "set-volume",
+   "purpose": "Sets the playback volume."
+  },
+  {
+   "id": "open-subtitle-menu",
+   "purpose": "Opens the subtitle menu anchored to the subtitle button."
+  },
+  {
+   "id": "choose-subtitle",
+   "purpose": "Selects Off, an external SRT/ASS track or an embedded subtitle track; the check mark moves and the screen subtitle line updates or hides."
+  },
+  {
+   "id": "load-subtitle-file",
+   "purpose": "Opens the system file picker for a .srt/.ass file next to the video; the loaded track is added to the menu and selected."
+  },
+  {
+   "id": "open-audio-menu",
+   "purpose": "Opens the audio track menu."
+  },
+  {
+   "id": "choose-audio-track",
+   "purpose": "Switches the active audio track; the check mark moves."
+  },
+  {
+   "id": "open-size-menu",
+   "purpose": "Opens the screen size menu."
+  },
+  {
+   "id": "choose-screen-size",
+   "purpose": "Resizes the screen to Small 3 m, Medium 6 m or Large 10 m keeping the same visual centre."
+  },
+  {
+   "id": "toggle-room-dimming",
+   "purpose": "On: dark virtual theater (StageStyle.Full). Off: dimmed passthrough room (Mixed)."
+  },
+  {
+   "id": "open-language-menu",
+   "purpose": "Opens the language menu (Follow system, Simplified Chinese, English)."
+  },
+  {
+   "id": "choose-language",
+   "purpose": "Applies the chosen language to every string immediately and persists it."
+  },
+  {
+   "id": "set-poster-depth",
+   "purpose": "Sets 3D poster layer separation: Off, Subtle, Standard (default), Strong; posters update immediately."
+  },
+  {
+   "id": "toggle-auto-resume",
+   "purpose": "When on, playback starts from the saved position; when off, from 0:00."
+  },
+  {
+   "id": "ask-clear-history",
+   "purpose": "Opens the Clear watch history confirmation dialog."
+  },
+  {
+   "id": "clear-history",
+   "purpose": "Removes all saved positions; Continue watching becomes empty; a snackbar confirms."
+  },
+  {
+   "id": "exit-app",
+   "purpose": "Finishes the activity and closes all Home Cinema windows."
+  },
+  {
+   "id": "open-add-source",
+   "purpose": "Opens the Add media source sheet with Jellyfin preselected."
+  },
+  {
+   "id": "close-add-source",
+   "purpose": "Closes the sheet without saving."
+  },
+  {
+   "id": "choose-source-type",
+   "purpose": "Single choice. Emby/Jellyfin/WebDAV show server, username and password fields; Headset storage hides them and the main button becomes Choose folder."
+  },
+  {
+   "id": "connect-source",
+   "purpose": "Authenticates (Emby/Jellyfin AuthenticateByName, WebDAV PROPFIND) or opens the folder picker; on success the source appears in the Sources list and its titles join the library; on failure the field shows an error."
+  },
+  {
+   "id": "filter-library",
+   "purpose": "Filters the library grid to All, Movies or Shows."
+  },
+  {
+   "id": "search-library",
+   "purpose": "Opens a search field in the Home header filtering titles by name."
+  },
+  {
+   "id": "refresh-library",
+   "purpose": "Re-reads all connected sources."
+  }
+ ],
+ "nodes": [
+  {
+   "id": "main-tabs",
+   "kind": "spatialui",
+   "component": "sui-tab-bar",
+   "props": {
+    "items": "Home,Library,Sources,Settings",
+    "icons": "ic_home,ic_film,ICON7-S029,ICON7-A117",
+    "selected-index": 0,
+    "show-labels": null
+   },
+   "localizedText": {
+    "items": {
+     "en": "Home,Library,Sources,Settings",
+     "zh": "首页,媒体库,媒体源,设置",
+     "key": "tab.items"
+    }
+   },
+   "events": {
+    "select": "switch-destination"
+   }
+  },
+  {
+   "id": "home-title",
+   "kind": "text",
+   "content": "Home",
+   "textStyle": {
+    "typography": "headlineLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home",
+     "zh": "首页",
+     "key": "home.title"
+    }
+   }
+  },
+  {
+   "id": "home-sub",
+   "kind": "text",
+   "content": "Demo library · 8 titles",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Demo library · 8 titles",
+     "zh": "演示片库 · 8 部",
+     "key": "home.sub"
+    }
+   }
+  },
+  {
+   "id": "home-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 4
+   },
+   "children": [
+    "home-title",
+    "home-sub"
+   ]
+  },
+  {
+   "id": "home-search",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_search",
+    "size": "regular",
+    "semantic-label": "Search library"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Search library",
+     "zh": "搜索片库",
+     "key": "home.search"
+    }
+   },
+   "events": {
+    "click-action": "search-library"
+   }
+  },
+  {
+   "id": "home-refresh",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_refresh",
+    "size": "regular",
+    "semantic-label": "Refresh library"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Refresh library",
+     "zh": "刷新片库",
+     "key": "home.refresh"
+    }
+   },
+   "events": {
+    "click-action": "refresh-library"
+   }
+  },
+  {
+   "id": "home-actions",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 8
+   },
+   "children": [
+    "home-search",
+    "home-refresh"
+   ]
+  },
+  {
+   "id": "home-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 16
+   },
+   "children": [
+    "home-head-copy",
+    "home-actions"
+   ]
+  },
+  {
+   "id": "home-continue-title",
+   "kind": "text",
+   "content": "Continue watching",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Continue watching",
+     "zh": "继续观看",
+     "key": "home.continue"
+    }
+   }
+  },
+  {
+   "id": "cont-img-harbor",
+   "kind": "media",
+   "assetId": "backdrop-harbor",
+   "layout": {
+    "widthDp": 208,
+    "heightDp": 117,
+    "fit": "cover",
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "cont-prog-harbor",
+   "kind": "spatialui",
+   "component": "sui-linear-progress",
+   "props": {
+    "value": 0.38,
+    "size": "small",
+    "progress-color": "interaction",
+    "track-color": "fillTertiary"
+   }
+  },
+  {
+   "id": "cont-name-harbor",
+   "kind": "text",
+   "content": "Harbor Lights",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "cont-left-harbor",
+   "kind": "text",
+   "content": "70 min left",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   }
+  },
+  {
+   "id": "cont-copy-harbor",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2
+   },
+   "children": [
+    "cont-name-harbor",
+    "cont-left-harbor"
+   ]
+  },
+  {
+   "id": "cont-harbor",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 224,
+    "gapDp": 8,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "bindings": {
+    "title": "dataCases.titles[harbor]"
+   },
+   "children": [
+    "cont-img-harbor",
+    "cont-prog-harbor",
+    "cont-copy-harbor"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "cont-img-keepers",
+   "kind": "media",
+   "assetId": "backdrop-keepers",
+   "layout": {
+    "widthDp": 208,
+    "heightDp": 117,
+    "fit": "cover",
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "cont-prog-keepers",
+   "kind": "spatialui",
+   "component": "sui-linear-progress",
+   "props": {
+    "value": 0.55,
+    "size": "small",
+    "progress-color": "interaction",
+    "track-color": "fillTertiary"
+   }
+  },
+  {
+   "id": "cont-name-keepers",
+   "kind": "text",
+   "content": "Lighthouse Keepers",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "cont-left-keepers",
+   "kind": "text",
+   "content": "21 min left",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   }
+  },
+  {
+   "id": "cont-copy-keepers",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2
+   },
+   "children": [
+    "cont-name-keepers",
+    "cont-left-keepers"
+   ]
+  },
+  {
+   "id": "cont-keepers",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 224,
+    "gapDp": 8,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "bindings": {
+    "title": "dataCases.titles[keepers]"
+   },
+   "children": [
+    "cont-img-keepers",
+    "cont-prog-keepers",
+    "cont-copy-keepers"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "cont-img-moon",
+   "kind": "media",
+   "assetId": "backdrop-moon",
+   "layout": {
+    "widthDp": 208,
+    "heightDp": 117,
+    "fit": "cover",
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "cont-prog-moon",
+   "kind": "spatialui",
+   "component": "sui-linear-progress",
+   "props": {
+    "value": 0.72,
+    "size": "small",
+    "progress-color": "interaction",
+    "track-color": "fillTertiary"
+   }
+  },
+  {
+   "id": "cont-name-moon",
+   "kind": "text",
+   "content": "Paper Moon Express",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "cont-left-moon",
+   "kind": "text",
+   "content": "27 min left",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   }
+  },
+  {
+   "id": "cont-copy-moon",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2
+   },
+   "children": [
+    "cont-name-moon",
+    "cont-left-moon"
+   ]
+  },
+  {
+   "id": "cont-moon",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 224,
+    "gapDp": 8,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "bindings": {
+    "title": "dataCases.titles[moon]"
+   },
+   "children": [
+    "cont-img-moon",
+    "cont-prog-moon",
+    "cont-copy-moon"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "cont-img-vega",
+   "kind": "media",
+   "assetId": "backdrop-vega",
+   "layout": {
+    "widthDp": 208,
+    "heightDp": 117,
+    "fit": "cover",
+    "radiusDp": 12
+   }
+  },
+  {
+   "id": "cont-prog-vega",
+   "kind": "spatialui",
+   "component": "sui-linear-progress",
+   "props": {
+    "value": 0.12,
+    "size": "small",
+    "progress-color": "interaction",
+    "track-color": "fillTertiary"
+   }
+  },
+  {
+   "id": "cont-name-vega",
+   "kind": "text",
+   "content": "Signal from Vega",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "cont-left-vega",
+   "kind": "text",
+   "content": "110 min left",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   }
+  },
+  {
+   "id": "cont-copy-vega",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 2
+   },
+   "children": [
+    "cont-name-vega",
+    "cont-left-vega"
+   ]
+  },
+  {
+   "id": "cont-vega",
+   "kind": "content",
+   "layout": {
+    "mode": "column",
+    "widthDp": 224,
+    "gapDp": 8,
+    "paddingDp": 8
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 16
+   },
+   "bindings": {
+    "title": "dataCases.titles[vega]"
+   },
+   "children": [
+    "cont-img-vega",
+    "cont-prog-vega",
+    "cont-copy-vega"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "cont-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 24
+   },
+   "children": [
+    "cont-harbor",
+    "cont-keepers",
+    "cont-moon",
+    "cont-vega"
+   ]
+  },
+  {
+   "id": "home-continue",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 12
+   },
+   "children": [
+    "home-continue-title",
+    "cont-row"
+   ]
+  },
+  {
+   "id": "home-recent-title",
+   "kind": "text",
+   "content": "Recently added",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Recently added",
+     "zh": "最近添加",
+     "key": "home.recent"
+    }
+   }
+  },
+  {
+   "id": "home-poster-vega-back",
+   "kind": "media",
+   "assetId": "backdrop-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-vega-plate",
+   "kind": "media",
+   "assetId": "poster-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-vega-logo",
+   "kind": "media",
+   "assetId": "logo-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-vega",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[vega]"
+   },
+   "children": [
+    "home-poster-vega-back",
+    "home-poster-vega-plate",
+    "home-poster-vega-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-kite-back",
+   "kind": "media",
+   "assetId": "backdrop-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-kite-plate",
+   "kind": "media",
+   "assetId": "poster-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-kite-logo",
+   "kind": "media",
+   "assetId": "logo-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-kite",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[kite]"
+   },
+   "children": [
+    "home-poster-kite-back",
+    "home-poster-kite-plate",
+    "home-poster-kite-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-harbor-back",
+   "kind": "media",
+   "assetId": "backdrop-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-harbor-plate",
+   "kind": "media",
+   "assetId": "poster-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-harbor-logo",
+   "kind": "media",
+   "assetId": "logo-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-harbor",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[harbor]"
+   },
+   "children": [
+    "home-poster-harbor-back",
+    "home-poster-harbor-plate",
+    "home-poster-harbor-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-keepers-back",
+   "kind": "media",
+   "assetId": "backdrop-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-keepers-plate",
+   "kind": "media",
+   "assetId": "poster-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-keepers-logo",
+   "kind": "media",
+   "assetId": "logo-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-keepers",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[keepers]"
+   },
+   "children": [
+    "home-poster-keepers-back",
+    "home-poster-keepers-plate",
+    "home-poster-keepers-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-moon-back",
+   "kind": "media",
+   "assetId": "backdrop-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-moon-plate",
+   "kind": "media",
+   "assetId": "poster-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-moon-logo",
+   "kind": "media",
+   "assetId": "logo-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-moon",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[moon]"
+   },
+   "children": [
+    "home-poster-moon-back",
+    "home-poster-moon-plate",
+    "home-poster-moon-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-orchard-back",
+   "kind": "media",
+   "assetId": "backdrop-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "home-poster-orchard-plate",
+   "kind": "media",
+   "assetId": "poster-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "home-poster-orchard-logo",
+   "kind": "media",
+   "assetId": "logo-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "home-poster-orchard",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[orchard]"
+   },
+   "children": [
+    "home-poster-orchard-back",
+    "home-poster-orchard-plate",
+    "home-poster-orchard-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "home-poster-wall",
+   "kind": "domain_visual",
+   "designNotes": {
+    "represents": "Row of 3D layered posters for recently added titles",
+    "previewRepresentation": "CSS 3D approximation: blurred backdrop layer behind, poster plate, title logo layer in front",
+    "assetStatus": "available",
+    "assetId": "demo-titles",
+    "appearance": [
+     "Each poster is three stacked planes: Backdrop image ~2 cm behind, Primary poster plate 2:3 with ~6 mm edge thickness, Logo image ~2.5 cm in front",
+     "Real libraries use the server's Primary, Backdrop and Logo images; without a Logo image the title is rendered as text on the front plane"
+    ],
+    "behaviors": [
+     "Hover by controller ray, hand ray or gaze tilts the poster up to 8 degrees toward the pointer and increases layer separation",
+     "Select (trigger, pinch, gaze + pinch) opens the Details subwindow",
+     "Layer separation scales with Settings > 3D poster depth (Off, Subtle, Standard, Strong)"
+    ],
+    "previewLimitations": [
+     "No real parallax from head motion",
+     "Thickness and lighting are approximated with shadows"
+    ]
+   },
+   "rendererKey": "poster-wall-3d",
+   "purpose": "3D model group: Row of 3D layered posters for recently added titles",
+   "layout": {
+    "mode": "row",
+    "gapDp": 32
+   },
+   "children": [
+    "home-poster-vega",
+    "home-poster-kite",
+    "home-poster-harbor",
+    "home-poster-keepers",
+    "home-poster-moon",
+    "home-poster-orchard"
+   ],
+   "events": {
+    "hover": "tilt-poster"
+   }
+  },
+  {
+   "id": "home-recent",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 12
+   },
+   "children": [
+    "home-recent-title",
+    "home-poster-wall"
+   ]
+  },
+  {
+   "id": "page-home",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 20,
+    "grow": 1
+   },
+   "children": [
+    "home-head",
+    "home-continue",
+    "home-recent"
+   ],
+   "bindings": {
+    "hidden": "destination != Home"
+   }
+  },
+  {
+   "id": "lib-title",
+   "kind": "text",
+   "content": "Library",
+   "textStyle": {
+    "typography": "headlineLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Library",
+     "zh": "媒体库",
+     "key": "lib.title"
+    }
+   }
+  },
+  {
+   "id": "lib-sub",
+   "kind": "text",
+   "content": "All titles from your connected sources",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "All titles from your connected sources",
+     "zh": "所有已连接媒体源中的影片",
+     "key": "lib.sub"
+    }
+   }
+  },
+  {
+   "id": "lib-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 4
+   },
+   "children": [
+    "lib-title",
+    "lib-sub"
+   ]
+  },
+  {
+   "id": "lib-filter",
+   "kind": "spatialui",
+   "component": "sui-segment-control",
+   "props": {
+    "options": "All,Movies,Shows",
+    "selected-index": 0,
+    "custom-width": "300"
+   },
+   "localizedText": {
+    "options": {
+     "en": "All,Movies,Shows",
+     "zh": "全部,电影,剧集",
+     "key": "lib.segments"
+    }
+   },
+   "events": {
+    "select": "filter-library"
+   }
+  },
+  {
+   "id": "lib-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 16
+   },
+   "children": [
+    "lib-head-copy",
+    "lib-filter"
+   ]
+  },
+  {
+   "id": "lib-poster-harbor-back",
+   "kind": "media",
+   "assetId": "backdrop-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-harbor-plate",
+   "kind": "media",
+   "assetId": "poster-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-harbor-logo",
+   "kind": "media",
+   "assetId": "logo-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-harbor",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[harbor]"
+   },
+   "children": [
+    "lib-poster-harbor-back",
+    "lib-poster-harbor-plate",
+    "lib-poster-harbor-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-moon-back",
+   "kind": "media",
+   "assetId": "backdrop-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-moon-plate",
+   "kind": "media",
+   "assetId": "poster-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-moon-logo",
+   "kind": "media",
+   "assetId": "logo-moon",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-moon",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[moon]"
+   },
+   "children": [
+    "lib-poster-moon-back",
+    "lib-poster-moon-plate",
+    "lib-poster-moon-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-orchard-back",
+   "kind": "media",
+   "assetId": "backdrop-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-orchard-plate",
+   "kind": "media",
+   "assetId": "poster-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-orchard-logo",
+   "kind": "media",
+   "assetId": "logo-orchard",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-orchard",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[orchard]"
+   },
+   "children": [
+    "lib-poster-orchard-back",
+    "lib-poster-orchard-plate",
+    "lib-poster-orchard-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-vega-back",
+   "kind": "media",
+   "assetId": "backdrop-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-vega-plate",
+   "kind": "media",
+   "assetId": "poster-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-vega-logo",
+   "kind": "media",
+   "assetId": "logo-vega",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-vega",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[vega]"
+   },
+   "children": [
+    "lib-poster-vega-back",
+    "lib-poster-vega-plate",
+    "lib-poster-vega-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-relay-back",
+   "kind": "media",
+   "assetId": "backdrop-relay",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-relay-plate",
+   "kind": "media",
+   "assetId": "poster-relay",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-relay-logo",
+   "kind": "media",
+   "assetId": "logo-relay",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-relay",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[relay]"
+   },
+   "children": [
+    "lib-poster-relay-back",
+    "lib-poster-relay-plate",
+    "lib-poster-relay-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-rain-back",
+   "kind": "media",
+   "assetId": "backdrop-rain",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-rain-plate",
+   "kind": "media",
+   "assetId": "poster-rain",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-rain-logo",
+   "kind": "media",
+   "assetId": "logo-rain",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-rain",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[rain]"
+   },
+   "children": [
+    "lib-poster-rain-back",
+    "lib-poster-rain-plate",
+    "lib-poster-rain-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-kite-back",
+   "kind": "media",
+   "assetId": "backdrop-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-kite-plate",
+   "kind": "media",
+   "assetId": "poster-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-kite-logo",
+   "kind": "media",
+   "assetId": "logo-kite",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-kite",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[kite]"
+   },
+   "children": [
+    "lib-poster-kite-back",
+    "lib-poster-kite-plate",
+    "lib-poster-kite-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "lib-poster-keepers-back",
+   "kind": "media",
+   "assetId": "backdrop-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "behind plate, about 2 cm, blurred"
+   },
+   "purpose": "Backdrop layer"
+  },
+  {
+   "id": "lib-poster-keepers-plate",
+   "kind": "media",
+   "assetId": "poster-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "plate, 6 mm edge thickness"
+   },
+   "purpose": "Poster plate"
+  },
+  {
+   "id": "lib-poster-keepers-logo",
+   "kind": "media",
+   "assetId": "logo-keepers",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover",
+    "radiusDp": 12,
+    "depthLayer": "in front, about 2.5 cm"
+   },
+   "purpose": "Title logo layer"
+  },
+  {
+   "id": "lib-poster-keepers",
+   "kind": "domain_visual",
+   "rendererKey": "layered-poster-3d",
+   "purpose": "One 3D layered poster entity: backdrop plane, poster plate with edge thickness, title logo plane",
+   "layout": {
+    "widthDp": 176,
+    "heightDp": 264
+   },
+   "bindings": {
+    "title": "dataCases.titles[keepers]"
+   },
+   "children": [
+    "lib-poster-keepers-back",
+    "lib-poster-keepers-plate",
+    "lib-poster-keepers-logo"
+   ],
+   "events": {
+    "select": "open-detail"
+   }
+  },
+  {
+   "id": "library-poster-wall",
+   "kind": "domain_visual",
+   "designNotes": {
+    "represents": "Scrollable grid of 3D layered posters for the whole library",
+    "previewRepresentation": "Same layered poster as home-poster-wall, wrapped into a scrolling grid",
+    "assetStatus": "available",
+    "assetId": "demo-titles",
+    "behaviors": [
+     "Segment control filters All, Movies, Shows",
+     "Vertical scroll by thumbstick, pinch-drag or ray drag"
+    ],
+    "previewLimitations": [
+     "Grid virtualization and server paging are not simulated"
+    ]
+   },
+   "rendererKey": "poster-wall-3d",
+   "purpose": "3D model group: Scrollable grid of 3D layered posters for the whole library",
+   "layout": {
+    "mode": "wrap",
+    "gapDp": 32
+   },
+   "children": [
+    "lib-poster-harbor",
+    "lib-poster-moon",
+    "lib-poster-orchard",
+    "lib-poster-vega",
+    "lib-poster-relay",
+    "lib-poster-rain",
+    "lib-poster-kite",
+    "lib-poster-keepers"
+   ],
+   "events": {
+    "hover": "tilt-poster"
+   }
+  },
+  {
+   "id": "page-library",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 20,
+    "grow": 1
+   },
+   "children": [
+    "lib-head",
+    "library-poster-wall"
+   ],
+   "bindings": {
+    "hidden": "destination != Library"
+   }
+  },
+  {
+   "id": "src-title",
+   "kind": "text",
+   "content": "Sources",
+   "textStyle": {
+    "typography": "headlineLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Sources",
+     "zh": "媒体源",
+     "key": "src.title"
+    }
+   }
+  },
+  {
+   "id": "src-sub",
+   "kind": "text",
+   "content": "Only media you own or are authorized to play",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Only media you own or are authorized to play",
+     "zh": "只连接你拥有或有权播放的媒体",
+     "key": "src.sub"
+    }
+   }
+  },
+  {
+   "id": "src-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 4
+   },
+   "children": [
+    "src-title",
+    "src-sub"
+   ]
+  },
+  {
+   "id": "src-add",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Add source",
+    "leading-icon": "ic_plus",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Add source",
+     "zh": "添加媒体源",
+     "key": "src.add"
+    }
+   },
+   "events": {
+    "click-action": "open-add-source"
+   }
+  },
+  {
+   "id": "src-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 16
+   },
+   "children": [
+    "src-head-copy",
+    "src-add"
+   ]
+  },
+  {
+   "id": "src-demo-glyph",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "name": "ic_film",
+    "size": 24
+   }
+  },
+  {
+   "id": "src-demo-icon",
+   "kind": "content",
+   "layout": {
+    "widthDp": 40,
+    "heightDp": 40,
+    "align": "center",
+    "justify": "center"
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 12
+   },
+   "props": {
+    "slot": "leading"
+   },
+   "children": [
+    "src-demo-glyph"
+   ]
+  },
+  {
+   "id": "src-demo-check",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "slot": "trailing",
+    "name": "ic_check_circle_fill",
+    "size": 24,
+    "tint": "passable"
+   }
+  },
+  {
+   "id": "src-demo",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 760,
+    "content-padding": 16,
+    "headline": "Demo library",
+    "supporting": "Built in · 8 original short demo titles"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Demo library",
+     "zh": "演示片库",
+     "key": "src.demo.h"
+    },
+    "supporting": {
+     "en": "Built in · 8 original short demo titles",
+     "zh": "内置 · 8 部原创演示短片",
+     "key": "src.demo.s"
+    }
+   },
+   "children": [
+    "src-demo-icon",
+    "src-demo-check"
+   ]
+  },
+  {
+   "id": "src-jf-glyph",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "name": "ic_cloud",
+    "size": 24
+   }
+  },
+  {
+   "id": "src-jf-icon",
+   "kind": "content",
+   "layout": {
+    "widthDp": 40,
+    "heightDp": 40,
+    "align": "center",
+    "justify": "center"
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 12
+   },
+   "props": {
+    "slot": "leading"
+   },
+   "children": [
+    "src-jf-glyph"
+   ]
+  },
+  {
+   "id": "src-jf-check",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "slot": "trailing",
+    "name": "ic_check_circle_fill",
+    "size": 24,
+    "tint": "passable"
+   }
+  },
+  {
+   "id": "src-jf",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 760,
+    "content-padding": 16,
+    "headline": "Living room Jellyfin",
+    "supporting": "http://192.168.1.20:8096 · Connected"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Living room Jellyfin",
+     "zh": "客厅 Jellyfin",
+     "key": "src.jf.h"
+    },
+    "supporting": {
+     "en": "http://192.168.1.20:8096 · Connected",
+     "zh": "http://192.168.1.20:8096 · 已连接",
+     "key": "src.jf.s"
+    }
+   },
+   "children": [
+    "src-jf-icon",
+    "src-jf-check"
+   ],
+   "bindings": {
+    "hidden": "no Emby/Jellyfin source connected"
+   }
+  },
+  {
+   "id": "src-nas-glyph",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "name": "ic_computer",
+    "size": 24
+   }
+  },
+  {
+   "id": "src-nas-icon",
+   "kind": "content",
+   "layout": {
+    "widthDp": 40,
+    "heightDp": 40,
+    "align": "center",
+    "justify": "center"
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 12
+   },
+   "props": {
+    "slot": "leading"
+   },
+   "children": [
+    "src-nas-glyph"
+   ]
+  },
+  {
+   "id": "src-nas-check",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "slot": "trailing",
+    "name": "ic_check_circle_fill",
+    "size": 24,
+    "tint": "passable"
+   }
+  },
+  {
+   "id": "src-nas",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 760,
+    "content-padding": 16,
+    "headline": "NAS · WebDAV",
+    "supporting": "https://nas.local/webdav/Movies · Connected"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "NAS · WebDAV",
+     "zh": "NAS · WebDAV",
+     "key": "src.nas.h"
+    },
+    "supporting": {
+     "en": "https://nas.local/webdav/Movies · Connected",
+     "zh": "https://nas.local/webdav/Movies · 已连接",
+     "key": "src.nas.s"
+    }
+   },
+   "children": [
+    "src-nas-icon",
+    "src-nas-check"
+   ],
+   "bindings": {
+    "hidden": "no WebDAV source connected"
+   }
+  },
+  {
+   "id": "src-local-glyph",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "name": "ic_memory_card",
+    "size": 24
+   }
+  },
+  {
+   "id": "src-local-icon",
+   "kind": "content",
+   "layout": {
+    "widthDp": 40,
+    "heightDp": 40,
+    "align": "center",
+    "justify": "center"
+   },
+   "appearance": {
+    "fill": "fillLight",
+    "radiusDp": 12
+   },
+   "props": {
+    "slot": "leading"
+   },
+   "children": [
+    "src-local-glyph"
+   ]
+  },
+  {
+   "id": "src-local-check",
+   "kind": "spatialui",
+   "component": "sui-icon",
+   "props": {
+    "slot": "trailing",
+    "name": "ic_check_circle_fill",
+    "size": 24,
+    "tint": "passable"
+   }
+  },
+  {
+   "id": "src-local",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 760,
+    "content-padding": 16,
+    "headline": "On this headset",
+    "supporting": "Movies folder · 3 videos"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "On this headset",
+     "zh": "本机存储",
+     "key": "src.local.h"
+    },
+    "supporting": {
+     "en": "Movies folder · 3 videos",
+     "zh": "Movies 文件夹 · 3 个视频",
+     "key": "src.local.s"
+    }
+   },
+   "children": [
+    "src-local-icon",
+    "src-local-check"
+   ],
+   "bindings": {
+    "hidden": "no headset folder chosen"
+   }
+  },
+  {
+   "id": "src-list",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "grow": 1,
+    "overflow": "auto"
+   },
+   "children": [
+    "src-demo",
+    "src-jf",
+    "src-nas",
+    "src-local"
+   ]
+  },
+  {
+   "id": "opt-emby",
+   "kind": "spatialui",
+   "component": "sui-option",
+   "props": {
+    "icon": "ic_cloud",
+    "label": "Emby"
+   },
+   "localizedText": {
+    "label": {
+     "en": "Emby",
+     "zh": "Emby",
+     "key": "sheet.emby"
+    }
+   },
+   "events": {
+    "checked-change": "choose-source-type"
+   }
+  },
+  {
+   "id": "opt-jf",
+   "kind": "spatialui",
+   "component": "sui-option",
+   "props": {
+    "icon": "ic_cloud",
+    "label": "Jellyfin",
+    "checked": null
+   },
+   "localizedText": {
+    "label": {
+     "en": "Jellyfin",
+     "zh": "Jellyfin",
+     "key": "sheet.jf"
+    }
+   },
+   "events": {
+    "checked-change": "choose-source-type"
+   }
+  },
+  {
+   "id": "opt-dav",
+   "kind": "spatialui",
+   "component": "sui-option",
+   "props": {
+    "icon": "ic_computer",
+    "label": "NAS (WebDAV)"
+   },
+   "localizedText": {
+    "label": {
+     "en": "NAS (WebDAV)",
+     "zh": "NAS（WebDAV）",
+     "key": "sheet.dav"
+    }
+   },
+   "events": {
+    "checked-change": "choose-source-type"
+   }
+  },
+  {
+   "id": "opt-local",
+   "kind": "spatialui",
+   "component": "sui-option",
+   "props": {
+    "icon": "ic_memory_card",
+    "label": "Headset storage"
+   },
+   "localizedText": {
+    "label": {
+     "en": "Headset storage",
+     "zh": "本机存储",
+     "key": "sheet.local"
+    }
+   },
+   "events": {
+    "checked-change": "choose-source-type"
+   }
+  },
+  {
+   "id": "sheet-types",
+   "kind": "layout",
+   "layout": {
+    "mode": "grid",
+    "columns": 4,
+    "gapDp": 8
+   },
+   "children": [
+    "opt-emby",
+    "opt-jf",
+    "opt-dav",
+    "opt-local"
+   ]
+  },
+  {
+   "id": "f-server-label",
+   "kind": "text",
+   "content": "Server address",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Server address",
+     "zh": "服务器地址",
+     "key": "sheet.server"
+    }
+   }
+  },
+  {
+   "id": "f-server-input",
+   "kind": "spatialui",
+   "component": "sui-text-field",
+   "props": {
+    "width": 536,
+    "placeholder": "http://192.168.1.20:8096"
+   },
+   "localizedText": {
+    "placeholder": {
+     "en": "http://192.168.1.20:8096",
+     "zh": "http://192.168.1.20:8096",
+     "key": "sheet.server.ph"
+    }
+   }
+  },
+  {
+   "id": "f-server",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8
+   },
+   "children": [
+    "f-server-label",
+    "f-server-input"
+   ]
+  },
+  {
+   "id": "f-user-label",
+   "kind": "text",
+   "content": "Username",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Username",
+     "zh": "用户名",
+     "key": "sheet.user"
+    }
+   }
+  },
+  {
+   "id": "f-user-input",
+   "kind": "spatialui",
+   "component": "sui-text-field",
+   "props": {
+    "width": 536,
+    "placeholder": "Your account name"
+   },
+   "localizedText": {
+    "placeholder": {
+     "en": "Your account name",
+     "zh": "你的账号名",
+     "key": "sheet.user.ph"
+    }
+   }
+  },
+  {
+   "id": "f-user",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8
+   },
+   "children": [
+    "f-user-label",
+    "f-user-input"
+   ]
+  },
+  {
+   "id": "f-pass-label",
+   "kind": "text",
+   "content": "Password",
+   "textStyle": {
+    "typography": "labelLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Password",
+     "zh": "密码",
+     "key": "sheet.pass"
+    }
+   }
+  },
+  {
+   "id": "f-pass-input",
+   "kind": "spatialui",
+   "component": "sui-text-field",
+   "props": {
+    "width": 536,
+    "placeholder": "Password"
+   },
+   "localizedText": {
+    "placeholder": {
+     "en": "Password",
+     "zh": "密码",
+     "key": "sheet.pass.ph"
+    }
+   }
+  },
+  {
+   "id": "f-pass",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8
+   },
+   "children": [
+    "f-pass-label",
+    "f-pass-input"
+   ]
+  },
+  {
+   "id": "sheet-remote",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 16
+   },
+   "children": [
+    "f-server",
+    "f-user",
+    "f-pass"
+   ],
+   "bindings": {
+    "hidden": "source type == Headset storage"
+   }
+  },
+  {
+   "id": "sheet-local-note",
+   "kind": "text",
+   "content": "Home Cinema reads video files from the folder you choose on this headset.",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema reads video files from the folder you choose on this headset.",
+     "zh": "私人影院读取你在本机选择的文件夹里的视频文件。",
+     "key": "sheet.local.note"
+    }
+   }
+  },
+  {
+   "id": "sheet-local",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 16
+   },
+   "children": [
+    "sheet-local-note"
+   ],
+   "bindings": {
+    "hidden": "source type != Headset storage"
+   }
+  },
+  {
+   "id": "sheet-note",
+   "kind": "text",
+   "content": "Only connect to servers and files you own or are authorized to use.",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Only connect to servers and files you own or are authorized to use.",
+     "zh": "只连接你拥有或有权使用的服务器和文件。",
+     "key": "sheet.note"
+    }
+   }
+  },
+  {
+   "id": "sheet-connect",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Connect",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Connect",
+     "zh": "连接",
+     "key": "sheet.connect"
+    }
+   },
+   "events": {
+    "click-action": "connect-source"
+   }
+  },
+  {
+   "id": "sheet-actions",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 8,
+    "justify": "end"
+   },
+   "children": [
+    "sheet-connect"
+   ]
+  },
+  {
+   "id": "sheet-body",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 16
+   },
+   "children": [
+    "sheet-types",
+    "sheet-remote",
+    "sheet-local",
+    "sheet-note",
+    "sheet-actions"
+   ]
+  },
+  {
+   "id": "add-sheet",
+   "kind": "spatialui",
+   "component": "sui-sheet",
+   "props": {
+    "title": "Add media source",
+    "width": 600
+   },
+   "localizedText": {
+    "title": {
+     "en": "Add media source",
+     "zh": "添加媒体源",
+     "key": "sheet.title"
+    }
+   },
+   "children": [
+    "sheet-body"
+   ],
+   "bindings": {
+    "hidden": "closed until open-add-source"
+   },
+   "events": {
+    "dismiss-request": "close-add-source"
+   }
+  },
+  {
+   "id": "page-sources",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 20,
+    "grow": 1
+   },
+   "children": [
+    "src-head",
+    "src-list",
+    "add-sheet"
+   ],
+   "bindings": {
+    "hidden": "destination != Sources"
+   }
+  },
+  {
+   "id": "set-title",
+   "kind": "text",
+   "content": "Settings",
+   "textStyle": {
+    "typography": "headlineLarge",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Settings",
+     "zh": "设置",
+     "key": "set.title"
+    }
+   }
+  },
+  {
+   "id": "set-sub",
+   "kind": "text",
+   "content": "Home Cinema 0.1",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Home Cinema 0.1",
+     "zh": "私人影院 0.1",
+     "key": "set.sub"
+    }
+   }
+  },
+  {
+   "id": "set-head-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 4
+   },
+   "children": [
+    "set-title",
+    "set-sub"
+   ]
+  },
+  {
+   "id": "set-head",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 16
+   },
+   "children": [
+    "set-head-copy"
+   ]
+  },
+  {
+   "id": "set-lang-btn",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "slot": "trailing",
+    "size": "small",
+    "text": "Follow system",
+    "trailing-icon": "ic_arrow_down"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "set.lang.v.sys"
+    }
+   },
+   "events": {
+    "click-action": "open-language-menu"
+   }
+  },
+  {
+   "id": "set-lang",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ic_globe",
+    "headline": "Language"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Language",
+     "zh": "语言",
+     "key": "set.lang.h"
+    }
+   },
+   "children": [
+    "set-lang-btn"
+   ]
+  },
+  {
+   "id": "set-depth-slider",
+   "kind": "spatialui",
+   "component": "sui-segment-slider",
+   "props": {
+    "slot": "trailing",
+    "segment-count": 3,
+    "step": 2,
+    "width": 180,
+    "semantic-label": "3D poster depth"
+   },
+   "events": {
+    "step-change": "set-poster-depth"
+   }
+  },
+  {
+   "id": "set-depth",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ic_layers",
+    "headline": "3D poster depth",
+    "supporting": "Off · Subtle · Standard · Strong"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "3D poster depth",
+     "zh": "3D 海报景深",
+     "key": "set.depth.h"
+    },
+    "supporting": {
+     "en": "Off · Subtle · Standard · Strong",
+     "zh": "关 · 轻微 · 标准 · 强烈",
+     "key": "set.depth.s"
+    }
+   },
+   "children": [
+    "set-depth-slider"
+   ]
+  },
+  {
+   "id": "set-resume-switch",
+   "kind": "spatialui",
+   "component": "sui-switch",
+   "props": {
+    "slot": "trailing",
+    "checked": null
+   },
+   "events": {
+    "checked-change": "toggle-auto-resume"
+   }
+  },
+  {
+   "id": "set-resume",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ic_history",
+    "headline": "Resume where you left off",
+    "supporting": "Start from the saved position automatically"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Resume where you left off",
+     "zh": "从上次位置继续",
+     "key": "set.resume.h"
+    },
+    "supporting": {
+     "en": "Start from the saved position automatically",
+     "zh": "自动从保存的进度开始播放",
+     "key": "set.resume.s"
+    }
+   },
+   "children": [
+    "set-resume-switch"
+   ]
+  },
+  {
+   "id": "set-subs-v",
+   "kind": "text",
+   "content": "Chinese",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "props": {
+    "slot": "trailing"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Chinese",
+     "zh": "中文",
+     "key": "set.sub.v"
+    }
+   }
+  },
+  {
+   "id": "set-subs",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ic_message_square_text",
+    "headline": "Preferred subtitles"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Preferred subtitles",
+     "zh": "首选字幕",
+     "key": "set.sub.h"
+    }
+   },
+   "children": [
+    "set-subs-v"
+   ]
+  },
+  {
+   "id": "set-audio-v",
+   "kind": "text",
+   "content": "Original",
+   "textStyle": {
+    "typography": "bodyMedium",
+    "color": "labelTertiary"
+   },
+   "props": {
+    "slot": "trailing"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Original",
+     "zh": "原声",
+     "key": "set.audio.v"
+    }
+   }
+  },
+  {
+   "id": "set-audio",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ic_headphones",
+    "headline": "Preferred audio"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Preferred audio",
+     "zh": "首选音轨",
+     "key": "set.audio.h"
+    }
+   },
+   "children": [
+    "set-audio-v"
+   ]
+  },
+  {
+   "id": "set-col-a",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "grow": 1,
+    "overflow": "auto"
+   },
+   "children": [
+    "set-lang",
+    "set-depth",
+    "set-resume",
+    "set-subs",
+    "set-audio"
+   ]
+  },
+  {
+   "id": "set-clear",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ICON7-S280",
+    "headline": "Clear watch history",
+    "supporting": "Removes saved positions on this headset"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Clear watch history",
+     "zh": "清除观看记录",
+     "key": "set.clear.h"
+    },
+    "supporting": {
+     "en": "Removes saved positions on this headset",
+     "zh": "删除本机保存的所有播放进度",
+     "key": "set.clear.s"
+    }
+   },
+   "events": {
+    "click-action": "ask-clear-history"
+   }
+  },
+  {
+   "id": "set-about",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 560,
+    "content-padding": 16,
+    "leading-icon": "ICON7-A007",
+    "headline": "About",
+    "supporting": "Plays media you own. Home Cinema provides no films or streams."
+   },
+   "localizedText": {
+    "headline": {
+     "en": "About",
+     "zh": "关于",
+     "key": "set.about.h"
+    },
+    "supporting": {
+     "en": "Plays media you own. Home Cinema provides no films or streams.",
+     "zh": "播放你自己的媒体。私人影院不提供任何影片或片源。",
+     "key": "set.about.s"
+    }
+   }
+  },
+  {
+   "id": "set-exit",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "text": "Exit Home Cinema",
+    "leading-icon": "ic_arrow_exit_door",
+    "size": "regular"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Exit Home Cinema",
+     "zh": "退出私人影院",
+     "key": "set.exit"
+    }
+   },
+   "events": {
+    "click-action": "exit-app"
+   }
+  },
+  {
+   "id": "set-exit-row",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "justify": "end"
+   },
+   "children": [
+    "set-exit"
+   ]
+  },
+  {
+   "id": "set-col-b",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "grow": 1,
+    "overflow": "auto"
+   },
+   "children": [
+    "set-clear",
+    "set-about",
+    "set-exit-row"
+   ]
+  },
+  {
+   "id": "set-cols",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 32
+   },
+   "children": [
+    "set-col-a",
+    "set-col-b"
+   ]
+  },
+  {
+   "id": "lang-sys",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Follow system"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Follow system",
+     "zh": "跟随系统",
+     "key": "set.lang.v.sys"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-zh",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "简体中文"
+   },
+   "localizedText": {
+    "title": {
+     "en": "简体中文",
+     "zh": "简体中文",
+     "key": "set.lang.v.zh"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-en",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "English"
+   },
+   "localizedText": {
+    "title": {
+     "en": "English",
+     "zh": "English",
+     "key": "set.lang.v.en"
+    }
+   },
+   "events": {
+    "select": "choose-language"
+   }
+  },
+  {
+   "id": "lang-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {},
+   "children": [
+    "lang-sys",
+    "lang-zh",
+    "lang-en"
+   ],
+   "bindings": {
+    "hidden": "closed until open-language-menu"
+   }
+  },
+  {
+   "id": "clear-dialog",
+   "kind": "spatialui",
+   "component": "sui-alert-dialog",
+   "props": {
+    "title": "Clear watch history?",
+    "text": "Saved positions for all titles on this headset will be removed.",
+    "confirm-text": "Clear",
+    "dismiss-text": "Cancel"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Clear watch history?",
+     "zh": "清除观看记录？",
+     "key": "clear.title"
+    },
+    "text": {
+     "en": "Saved positions for all titles on this headset will be removed.",
+     "zh": "将删除本机上所有影片的播放进度。",
+     "key": "clear.body"
+    }
+   },
+   "bindings": {
+    "hidden": "closed until ask-clear-history"
+   },
+   "events": {
+    "confirm": "clear-history"
+   }
+  },
+  {
+   "id": "page-settings",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 20,
+    "grow": 1
+   },
+   "children": [
+    "set-head",
+    "set-cols",
+    "lang-menu",
+    "clear-dialog"
+   ],
+   "bindings": {
+    "hidden": "destination != Settings"
+   }
+  },
+  {
+   "id": "vol-root",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "paddingDp": 32,
+    "gapDp": 20
+   },
+   "children": [
+    "main-tabs",
+    "page-home",
+    "page-library",
+    "page-sources",
+    "page-settings"
+   ]
+  },
+  {
+   "id": "det-close",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "slot": "leading",
+    "size": "small",
+    "icon": "ic_cross",
+    "semantic-label": "Close details",
+    "navigation-action": "close"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Close details",
+     "zh": "关闭详情",
+     "key": "det.close"
+    }
+   },
+   "events": {
+    "click-action": "close-detail"
+   }
+  },
+  {
+   "id": "det-heading",
+   "kind": "text",
+   "content": "Details",
+   "textStyle": {
+    "overrides": {
+     "weight": 700
+    }
+   },
+   "localizedText": {
+    "textcontent": {
+     "en": "Details",
+     "zh": "详情",
+     "key": "det.title"
+    }
+   }
+  },
+  {
+   "id": "det-titlebar",
+   "kind": "spatialui",
+   "component": "sui-title-bar",
+   "props": {
+    "title-node-id": "det-heading"
+   },
+   "children": [
+    "det-close",
+    "det-heading"
+   ]
+  },
+  {
+   "id": "det-art",
+   "kind": "media",
+   "assetId": "backdrop-harbor",
+   "layout": {
+    "widthDp": 296,
+    "heightDp": 167,
+    "fit": "cover",
+    "radiusDp": 16
+   },
+   "bindings": {
+    "assetId": "selectedTitle.backdrop"
+   }
+  },
+  {
+   "id": "det-name",
+   "kind": "text",
+   "content": "Harbor Lights",
+   "textStyle": {
+    "typography": "headlineMedium",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "det-year",
+   "kind": "spatialui",
+   "component": "sui-chip",
+   "props": {
+    "clickable": "false",
+    "size": "small",
+    "label": "2023"
+   }
+  },
+  {
+   "id": "det-run",
+   "kind": "spatialui",
+   "component": "sui-chip",
+   "props": {
+    "clickable": "false",
+    "size": "small",
+    "label": "1h 52m"
+   }
+  },
+  {
+   "id": "det-genre",
+   "kind": "spatialui",
+   "component": "sui-chip",
+   "props": {
+    "clickable": "false",
+    "size": "small",
+    "label": "Drama"
+   }
+  },
+  {
+   "id": "det-quality",
+   "kind": "spatialui",
+   "component": "sui-chip",
+   "props": {
+    "clickable": "false",
+    "size": "small",
+    "label": "4K · HDR"
+   }
+  },
+  {
+   "id": "det-chips",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 8
+   },
+   "children": [
+    "det-year",
+    "det-run",
+    "det-genre",
+    "det-quality"
+   ]
+  },
+  {
+   "id": "det-overview",
+   "kind": "text",
+   "content": "",
+   "textStyle": {
+    "typography": "bodyMediumMultiline",
+    "color": "labelTertiary"
+   },
+   "bindings": {
+    "content": "selectedTitle.overview (localized)"
+   }
+  },
+  {
+   "id": "det-audio",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 296,
+    "content-padding": 12,
+    "leading-icon": "ic_headphones",
+    "headline": "Audio",
+    "supporting": "Original · Stereo"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Audio",
+     "zh": "音轨",
+     "key": "det.audio"
+    },
+    "supporting": {
+     "en": "Original · Stereo",
+     "zh": "原声 · 立体声",
+     "key": "det.audio.v"
+    }
+   }
+  },
+  {
+   "id": "det-subs",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 296,
+    "content-padding": 12,
+    "leading-icon": "ic_message_square_text",
+    "headline": "Subtitles",
+    "supporting": "Chinese (SRT)"
+   },
+   "localizedText": {
+    "headline": {
+     "en": "Subtitles",
+     "zh": "字幕",
+     "key": "det.subs"
+    },
+    "supporting": {
+     "en": "Chinese (SRT)",
+     "zh": "中文（SRT）",
+     "key": "det.subs.v"
+    }
+   }
+  },
+  {
+   "id": "det-eps-title",
+   "kind": "text",
+   "content": "Episodes",
+   "textStyle": {
+    "typography": "titleSmall",
+    "color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Episodes",
+     "zh": "剧集",
+     "key": "det.eps"
+    }
+   }
+  },
+  {
+   "id": "det-ep1",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 296,
+    "content-padding": 12,
+    "headline": "1 · The First Storm",
+    "supporting": "48 min · Watched"
+   },
+   "localizedText": {
+    "supporting": {
+     "en": "48 min · Watched",
+     "zh": "48 分钟 · 已看完",
+     "key": "ep.1"
+    }
+   }
+  },
+  {
+   "id": "det-ep2",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 296,
+    "content-padding": 12,
+    "headline": "2 · Low Tide",
+    "supporting": "51 min · 21 min left"
+   },
+   "localizedText": {
+    "supporting": {
+     "en": "51 min · 21 min left",
+     "zh": "51 分钟 · 剩余 21 分钟",
+     "key": "ep.2"
+    }
+   }
+  },
+  {
+   "id": "det-ep3",
+   "kind": "spatialui",
+   "component": "sui-list-item",
+   "props": {
+    "custom-width": 296,
+    "content-padding": 12,
+    "headline": "3 · Signal Fires",
+    "supporting": "49 min"
+   },
+   "localizedText": {
+    "supporting": {
+     "en": "49 min",
+     "zh": "49 分钟",
+     "key": "ep.3"
+    }
+   }
+  },
+  {
+   "id": "det-eps",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 6
+   },
+   "children": [
+    "det-eps-title",
+    "det-ep1",
+    "det-ep2",
+    "det-ep3"
+   ],
+   "bindings": {
+    "hidden": "selected title is not a series"
+   }
+  },
+  {
+   "id": "det-resume",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "size": "regular",
+    "leading-icon": "ic_player_play",
+    "text": "Resume 42:10"
+   },
+   "events": {
+    "click-action": "enter-cinema"
+   }
+  },
+  {
+   "id": "det-restart",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "layout": {
+    "width": "fill"
+   },
+   "props": {
+    "size": "regular",
+    "text": "Play from start",
+    "container-color": "fillLight",
+    "content-color": "labelPrimary"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Play from start",
+     "zh": "从头播放",
+     "key": "det.restart"
+    }
+   },
+   "bindings": {
+    "hidden": "selected title has no saved position"
+   },
+   "events": {
+    "click-action": "enter-cinema-from-start"
+   }
+  },
+  {
+   "id": "det-actions",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 8,
+    "marginTop": "auto"
+   },
+   "children": [
+    "det-resume",
+    "det-restart"
+   ]
+  },
+  {
+   "id": "det-body",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 14,
+    "paddingDp": {
+     "top": 0,
+     "right": 32,
+     "bottom": 32,
+     "left": 32
+    },
+    "overflow": "auto",
+    "grow": 1
+   },
+   "children": [
+    "det-art",
+    "det-name",
+    "det-chips",
+    "det-overview",
+    "det-audio",
+    "det-subs",
+    "det-eps",
+    "det-actions"
+   ]
+  },
+  {
+   "id": "det-content",
+   "kind": "layout",
+   "layout": {
+    "mode": "column"
+   },
+   "children": [
+    "det-titlebar",
+    "det-body"
+   ]
+  },
+  {
+   "id": "detail-window",
+   "kind": "spatialui",
+   "component": "sui-subwindow",
+   "props": {
+    "placement": "end",
+    "dismiss-on-click-outside": "false",
+    "dismiss-on-escape": "false"
+   },
+   "children": [
+    "det-content"
+   ],
+   "regions": {
+    "titleBarNodeId": "det-titlebar",
+    "bodyNodeId": "det-body"
+   }
+  },
+  {
+   "id": "cinema-frame",
+   "kind": "media",
+   "assetId": "backdrop-harbor",
+   "layout": {
+    "sizing": "matchParent",
+    "fit": "cover"
+   },
+   "purpose": "Stands in for the decoded video frame",
+   "bindings": {
+    "assetId": "playingTitle.backdrop"
+   }
+  },
+  {
+   "id": "cinema-subline",
+   "kind": "text",
+   "content": "The fog is lifting. Keep the lantern burning.",
+   "textStyle": {
+    "typography": "headlineMedium",
+    "color": "labelPrimaryLight"
+   },
+   "purpose": "Subtitle line rendered on the lower part of the cinema screen",
+   "localizedText": {
+    "textcontent": {
+     "en": "The fog is lifting. Keep the lantern burning.",
+     "zh": "雾快散了，别让灯熄灭。",
+     "key": "cin.subline"
+    }
+   },
+   "bindings": {
+    "hidden": "subtitles Off"
+   }
+  },
+  {
+   "id": "cinema-screen",
+   "kind": "domain_visual",
+   "layout": {
+    "mode": "column"
+   },
+   "designNotes": {
+    "represents": "Large cinema screen entity in a Full Space Stage, video rendered with VideoMaterial",
+    "previewRepresentation": "Backdrop image with a slow pan stands in for video playback",
+    "assetStatus": "to-create",
+    "appearance": [
+     "16:9 plane, 6 m wide at 7 m distance by default, centre 1.6 m above floor, slight curvature optional",
+     "Soft light spill from the screen onto the virtual floor"
+    ],
+    "behaviors": [
+     "Screen size Small 3 m / Medium 6 m / Large 10 m, keeping the same visual centre",
+     "Subtitles (SRT/ASS external or embedded tracks) render on the lower part of the screen"
+    ],
+    "previewLimitations": [
+     "No real video decoding",
+     "Curvature and light spill are approximated"
+    ]
+   },
+   "rendererKey": "cinema-screen-videomaterial",
+   "purpose": "3D model: Large cinema screen entity in a Full Space Stage, video rendered with VideoMaterial",
+   "children": [
+    "cinema-frame",
+    "cinema-subline"
+   ]
+  },
+  {
+   "id": "cc-title",
+   "kind": "text",
+   "content": "Harbor Lights",
+   "textStyle": {
+    "typography": "titleLarge",
+    "color": "labelPrimary"
+   }
+  },
+  {
+   "id": "cc-time",
+   "kind": "text",
+   "content": "42:10 / 1:52:30",
+   "textStyle": {
+    "typography": "bodySmall",
+    "color": "labelTertiary"
+   }
+  },
+  {
+   "id": "cc-copy",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 4
+   },
+   "children": [
+    "cc-title",
+    "cc-time"
+   ]
+  },
+  {
+   "id": "cc-exit",
+   "kind": "spatialui",
+   "component": "sui-button",
+   "props": {
+    "size": "small",
+    "leading-icon": "ic_arrow_exit_door",
+    "text": "Exit cinema"
+   },
+   "localizedText": {
+    "text": {
+     "en": "Exit cinema",
+     "zh": "退出影院",
+     "key": "cin.exit"
+    }
+   },
+   "events": {
+    "click-action": "exit-cinema"
+   }
+  },
+  {
+   "id": "cc-row1",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 12
+   },
+   "children": [
+    "cc-copy",
+    "cc-exit"
+   ]
+  },
+  {
+   "id": "cc-seek",
+   "kind": "spatialui",
+   "component": "sui-slider",
+   "props": {
+    "value": 0.374,
+    "width": 844,
+    "semantic-label": "Playback position"
+   },
+   "events": {
+    "value-change-finished": "seek-to"
+   }
+  },
+  {
+   "id": "cc-row2",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 12
+   },
+   "children": [
+    "cc-seek"
+   ]
+  },
+  {
+   "id": "cc-back",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_skip_back_15",
+    "semantic-label": "Back 15 seconds"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Back 15 seconds",
+     "zh": "后退 15 秒",
+     "key": "cin.back"
+    }
+   },
+   "events": {
+    "click-action": "seek-back"
+   }
+  },
+  {
+   "id": "cc-play",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_player_pause",
+    "semantic-label": "Pause"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Pause",
+     "zh": "暂停",
+     "key": "cin.pause"
+    }
+   },
+   "events": {
+    "click-action": "toggle-playback"
+   }
+  },
+  {
+   "id": "cc-fwd",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_skip_forward_15",
+    "semantic-label": "Forward 15 seconds"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Forward 15 seconds",
+     "zh": "前进 15 秒",
+     "key": "cin.fwd"
+    }
+   },
+   "events": {
+    "click-action": "seek-forward"
+   }
+  },
+  {
+   "id": "cc-sep1",
+   "kind": "spatialui",
+   "component": "sui-vertical-divider",
+   "props": {}
+  },
+  {
+   "id": "cc-vol",
+   "kind": "spatialui",
+   "component": "sui-symbol-slider",
+   "props": {
+    "icon": "ic_volume_high",
+    "value": 0.7,
+    "width": 200,
+    "semantic-label": "Volume"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Volume",
+     "zh": "音量",
+     "key": "cin.vol"
+    }
+   },
+   "events": {
+    "value-change": "set-volume"
+   }
+  },
+  {
+   "id": "cc-spacer",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "grow": 1
+   }
+  },
+  {
+   "id": "cc-subs",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_message_square_text",
+    "semantic-label": "Subtitles"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Subtitles",
+     "zh": "字幕",
+     "key": "cin.subs"
+    }
+   },
+   "events": {
+    "click-action": "open-subtitle-menu"
+   }
+  },
+  {
+   "id": "cc-audio",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_headphones",
+    "semantic-label": "Audio track"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Audio track",
+     "zh": "音轨",
+     "key": "cin.audio"
+    }
+   },
+   "events": {
+    "click-action": "open-audio-menu"
+   }
+  },
+  {
+   "id": "cc-size",
+   "kind": "spatialui",
+   "component": "sui-icon-button",
+   "props": {
+    "icon": "ic_expand_window",
+    "semantic-label": "Screen size"
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Screen size",
+     "zh": "屏幕大小",
+     "key": "cin.size"
+    }
+   },
+   "events": {
+    "click-action": "open-size-menu"
+   }
+  },
+  {
+   "id": "cc-env",
+   "kind": "spatialui",
+   "component": "sui-toggle-icon-button",
+   "props": {
+    "icon": "ic_moon_stars",
+    "semantic-label": "Dim the room",
+    "checked": null
+   },
+   "localizedText": {
+    "semantic-label": {
+     "en": "Dim the room",
+     "zh": "调暗房间",
+     "key": "cin.env"
+    }
+   },
+   "events": {
+    "checked-change": "toggle-room-dimming"
+   }
+  },
+  {
+   "id": "cc-row3",
+   "kind": "layout",
+   "layout": {
+    "mode": "row",
+    "gapDp": 12
+   },
+   "children": [
+    "cc-back",
+    "cc-play",
+    "cc-fwd",
+    "cc-sep1",
+    "cc-vol",
+    "cc-spacer",
+    "cc-subs",
+    "cc-audio",
+    "cc-size",
+    "cc-env"
+   ]
+  },
+  {
+   "id": "cc-body",
+   "kind": "layout",
+   "layout": {
+    "mode": "column",
+    "gapDp": 12,
+    "paddingDp": {
+     "top": 20,
+     "right": 28,
+     "bottom": 22,
+     "left": 28
+    }
+   },
+   "children": [
+    "cc-row1",
+    "cc-row2",
+    "cc-row3"
+   ]
+  },
+  {
+   "id": "cinema-controls",
+   "kind": "spatialui",
+   "component": "sui-attachment-panel",
+   "props": {
+    "background": "material"
+   },
+   "designNotes": {
+    "relationship": "Scene attachment owned by the cinema root, 0.9 m in front of the initial head position and 0.35 m below eye level, tilted 20 degrees toward the user; does not overlap the screen",
+    "followBehavior": "Fixed in the scene after entering the cinema; does not follow head movement; fades after 5 s without input and reappears on ray, gaze or pinch"
+   },
+   "children": [
+    "cc-body"
+   ]
+  },
+  {
+   "id": "subs-off",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Off"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Off",
+     "zh": "关闭",
+     "key": "cin.sub.off"
+    }
+   },
+   "events": {
+    "select": "choose-subtitle"
+   }
+  },
+  {
+   "id": "subs-zh",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Chinese (SRT)",
+    "trailing-icon": "ic_check"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Chinese (SRT)",
+     "zh": "中文（SRT）",
+     "key": "cin.sub.zh"
+    }
+   },
+   "events": {
+    "select": "choose-subtitle"
+   }
+  },
+  {
+   "id": "subs-en",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "English (embedded)"
+   },
+   "localizedText": {
+    "title": {
+     "en": "English (embedded)",
+     "zh": "英文（内嵌）",
+     "key": "cin.sub.en"
+    }
+   },
+   "events": {
+    "select": "choose-subtitle"
+   }
+  },
+  {
+   "id": "subs-load",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Load subtitle file…",
+    "leading-icon": "ICON7-S029"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Load subtitle file…",
+     "zh": "加载字幕文件…",
+     "key": "cin.sub.load"
+    }
+   },
+   "events": {
+    "select": "load-subtitle-file"
+   }
+  },
+  {
+   "id": "subs-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {},
+   "children": [
+    "subs-off",
+    "subs-zh",
+    "subs-en",
+    "subs-load"
+   ],
+   "bindings": {
+    "hidden": "closed until open-subtitle-menu"
+   }
+  },
+  {
+   "id": "aud-1",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Original · Stereo",
+    "trailing-icon": "ic_check"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Original · Stereo",
+     "zh": "原声 · 立体声",
+     "key": "cin.aud.1"
+    }
+   },
+   "events": {
+    "select": "choose-audio-track"
+   }
+  },
+  {
+   "id": "aud-2",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Commentary · Stereo"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Commentary · Stereo",
+     "zh": "评论音轨 · 立体声",
+     "key": "cin.aud.2"
+    }
+   },
+   "events": {
+    "select": "choose-audio-track"
+   }
+  },
+  {
+   "id": "audio-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {},
+   "children": [
+    "aud-1",
+    "aud-2"
+   ],
+   "bindings": {
+    "hidden": "closed until open-audio-menu"
+   }
+  },
+  {
+   "id": "size-s",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Small · 3 m"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Small · 3 m",
+     "zh": "小 · 3 米",
+     "key": "cin.size.s"
+    }
+   },
+   "events": {
+    "select": "choose-screen-size"
+   }
+  },
+  {
+   "id": "size-m",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Medium · 6 m",
+    "trailing-icon": "ic_check"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Medium · 6 m",
+     "zh": "中 · 6 米",
+     "key": "cin.size.m"
+    }
+   },
+   "events": {
+    "select": "choose-screen-size"
+   }
+  },
+  {
+   "id": "size-l",
+   "kind": "spatialui",
+   "component": "sui-menu-item",
+   "props": {
+    "title": "Large · 10 m"
+   },
+   "localizedText": {
+    "title": {
+     "en": "Large · 10 m",
+     "zh": "大 · 10 米",
+     "key": "cin.size.l"
+    }
+   },
+   "events": {
+    "select": "choose-screen-size"
+   }
+  },
+  {
+   "id": "size-menu",
+   "kind": "spatialui",
+   "component": "sui-menu",
+   "props": {},
+   "children": [
+    "size-s",
+    "size-m",
+    "size-l"
+   ],
+   "bindings": {
+    "hidden": "closed until open-size-menu"
+   }
+  },
+  {
+   "id": "scene-cinema",
+   "kind": "domain_visual",
+   "designNotes": {
+    "represents": "Virtual dark theater environment for Full Space playback",
+    "previewRepresentation": "Radial gradient room with a floor plane",
+    "assetStatus": "to-create",
+    "appearance": [
+     "Dark matte room with floor and faint side walls; no branded elements"
+    ],
+    "behaviors": [
+     "Dim the room toggle switches between StageStyle.Full dark theater and a dimmed passthrough (Mixed) room"
+    ],
+    "previewLimitations": [
+     "Passthrough is shown as a lighter grey room"
+    ]
+   },
+   "rendererKey": "virtual-theater-stage",
+   "purpose": "3D scene: Virtual dark theater environment for Full Space playback",
+   "children": [
+    "cinema-screen",
+    "cinema-controls",
+    "subs-menu",
+    "audio-menu",
+    "size-menu"
+   ]
+  }
+ ],
+ "assets": [
+  {
+   "id": "app-icon",
+   "kind": "image",
+   "src": "assets/app-icon.svg",
+   "purpose": "Application icon (original)",
+   "sha256": "0b9ab0151f920cf4d5ffbc45ab20c5552f657c232fae80ac7973c49d22ec62be"
+  },
+  {
+   "id": "backdrop-harbor",
+   "kind": "image",
+   "src": "assets/backdrop-harbor.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "2ee120ade142ab075f5e164e05fb15a8cd500a36b626f70f6d495efaf733675d"
+  },
+  {
+   "id": "backdrop-keepers",
+   "kind": "image",
+   "src": "assets/backdrop-keepers.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "5073398c828590ce3d78993e9eb7c0bec6f8e3c7dd1728234df47a46a004d073"
+  },
+  {
+   "id": "backdrop-kite",
+   "kind": "image",
+   "src": "assets/backdrop-kite.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "9002b213a7d80d8c27b2ec96887707381100570ecec5df50cc2ed584b326d5f4"
+  },
+  {
+   "id": "backdrop-moon",
+   "kind": "image",
+   "src": "assets/backdrop-moon.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "be9fb93d76481dc4fe4ccd46766c38df92629ab98f201224ac1b824529b4f621"
+  },
+  {
+   "id": "backdrop-orchard",
+   "kind": "image",
+   "src": "assets/backdrop-orchard.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "97e1a2fc34794bc8da92525f9fa2c5e7a20f2e6ee9186c0abd47659f861fccf9"
+  },
+  {
+   "id": "backdrop-rain",
+   "kind": "image",
+   "src": "assets/backdrop-rain.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "21373417f6067d78b32b468f09e64ee976393ca3fd0b2e97e7fb631325a0d905"
+  },
+  {
+   "id": "backdrop-relay",
+   "kind": "image",
+   "src": "assets/backdrop-relay.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "7657b97e5910a4ac68fa812278861d4e5606b8677accad1c276caf60d01fcb4c"
+  },
+  {
+   "id": "backdrop-vega",
+   "kind": "image",
+   "src": "assets/backdrop-vega.svg",
+   "purpose": "Demo backdrop (16:9) used for the back poster layer, cards, details and the cinema stand-in",
+   "sha256": "7b160bf956a000f6766380bc4d17350983254b7493bd774dd8309e08d01ea1bb"
+  },
+  {
+   "id": "demo-titles",
+   "kind": "data",
+   "src": "assets/demo-titles.json",
+   "purpose": "Manifest of demo titles and their three poster layers",
+   "sha256": "8e2ef9d6a562747ae8260b2ac00f7d27c61d4441558f4dc489b6619024b4ed2a"
+  },
+  {
+   "id": "logo-harbor",
+   "kind": "image",
+   "src": "assets/logo-harbor.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "e33e0c47f7397c835ebf982d62038a209fe2afd5c9c624836d88d630c07c65b0"
+  },
+  {
+   "id": "logo-keepers",
+   "kind": "image",
+   "src": "assets/logo-keepers.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "b74b0228db38d87dc7512e2cb4ed42dda2936d3b7f9f83cf17c872e28ab02fe4"
+  },
+  {
+   "id": "logo-kite",
+   "kind": "image",
+   "src": "assets/logo-kite.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "95e903dfd35f1169f3dc5622fee8827efebfec74abad5155b61184bfa4ebda39"
+  },
+  {
+   "id": "logo-moon",
+   "kind": "image",
+   "src": "assets/logo-moon.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "324a2d8d57d6a8ee38be8a6bdb9ff97779c083679f8d3399e7f3bdc1a903ac3d"
+  },
+  {
+   "id": "logo-orchard",
+   "kind": "image",
+   "src": "assets/logo-orchard.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "a4effd2dba89391547ecb76738b181a0b3317ffcaf7c777dd3ec1d03eadfd482"
+  },
+  {
+   "id": "logo-rain",
+   "kind": "image",
+   "src": "assets/logo-rain.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "7110c229640b3c17619da3b20085cb6edc99ce5b9627f04765da1aa9942d7fe0"
+  },
+  {
+   "id": "logo-relay",
+   "kind": "image",
+   "src": "assets/logo-relay.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "96ddfdac5ff46a91d4bdeeb26f3e2fa761acd0f400090da440e39355a302a350"
+  },
+  {
+   "id": "logo-vega",
+   "kind": "image",
+   "src": "assets/logo-vega.svg",
+   "purpose": "Demo title logo (transparent) used as the front poster layer",
+   "sha256": "184810632e9be827930b00f3b73be05aa5851e7ec4503fae961ccec09e939fd9"
+  },
+  {
+   "id": "poster-harbor",
+   "kind": "image",
+   "src": "assets/poster-harbor.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "b6175ca3dcb754ccb87dafab3a9f62141837fe70efca21516c089dc833635d76"
+  },
+  {
+   "id": "poster-keepers",
+   "kind": "image",
+   "src": "assets/poster-keepers.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "d0bc38325f3b9a1c8f006ec4379af257baf2f71f83ce744e6bb3ae9fac772541"
+  },
+  {
+   "id": "poster-kite",
+   "kind": "image",
+   "src": "assets/poster-kite.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "e18ddcf43b1f92f97d838f3a20479fb8058018c3b74a29218086bc2aef211ce8"
+  },
+  {
+   "id": "poster-moon",
+   "kind": "image",
+   "src": "assets/poster-moon.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "b4181e9622b5db6e84c49ffc84f69a50d37e279d9ca52827f3a1e4984ea07fa3"
+  },
+  {
+   "id": "poster-orchard",
+   "kind": "image",
+   "src": "assets/poster-orchard.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "a02b4856142d1ff01ba32b6570e82f65b77dfc032bfc93411acf43cd1e366770"
+  },
+  {
+   "id": "poster-rain",
+   "kind": "image",
+   "src": "assets/poster-rain.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "1b51ce855d50c13d45380509cd94eec856cf64f0edb1c4c1f7535dabf4d38fb8"
+  },
+  {
+   "id": "poster-relay",
+   "kind": "image",
+   "src": "assets/poster-relay.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "6ab1b4bb67688ad9736fa83f75252cd8d65499f263445a82b592fd0802bd4985"
+  },
+  {
+   "id": "poster-vega",
+   "kind": "image",
+   "src": "assets/poster-vega.svg",
+   "purpose": "Demo poster plate (2:3), original artwork",
+   "sha256": "71e2e723a58202fba0bc00e321b7afbd11421bd0351e61969f89aa81a2d30ebc"
+  }
+ ],
+ "dataCases": {
+  "titles": {
+   "harbor": {
+    "en": "Harbor Lights",
+    "zh": "港湾灯火",
+    "year": 2023,
+    "run": "1h 52m",
+    "genre": {
+     "en": "Drama",
+     "zh": "剧情"
+    },
+    "q": "4K · HDR",
+    "ov": {
+     "en": "A night-shift crane operator keeps a lantern burning for a ship that never arrives, until one foggy winter it finally does.",
+     "zh": "夜班吊车司机每晚为一艘迟迟未归的船点灯，直到某个起雾的冬夜，它真的回来了。"
+    },
+    "p": 0.38
+   },
+   "moon": {
+    "en": "Paper Moon Express",
+    "zh": "纸月亮快车",
+    "year": 2022,
+    "run": "1h 38m",
+    "genre": {
+     "en": "Fantasy",
+     "zh": "奇幻"
+    },
+    "q": "1080p",
+    "ov": {
+     "en": "A sleeper train that only runs under a full moon carries strangers toward the places they forgot.",
+     "zh": "一列只在满月夜运行的卧铺列车，载着陌生人驶向他们遗忘的地方。"
+    },
+    "p": 0.72
+   },
+   "orchard": {
+    "en": "The Quiet Orchard",
+    "zh": "静谧果园",
+    "year": 2021,
+    "run": "1h 46m",
+    "genre": {
+     "en": "Family",
+     "zh": "家庭"
+    },
+    "q": "4K",
+    "ov": {
+     "en": "Three siblings return to their grandmother's orchard for one last harvest.",
+     "zh": "三兄妹回到外婆的果园，完成最后一次丰收。"
+    },
+    "p": null
+   },
+   "vega": {
+    "en": "Signal from Vega",
+    "zh": "织女星信号",
+    "year": 2024,
+    "run": "2h 05m",
+    "genre": {
+     "en": "Sci-fi",
+     "zh": "科幻"
+    },
+    "q": "4K · HDR",
+    "ov": {
+     "en": "A small-town radio club picks up a repeating pattern from a nearby star.",
+     "zh": "小镇无线电社团收到了来自邻近恒星的重复信号。"
+    },
+    "p": 0.12
+   },
+   "relay": {
+    "en": "Desert Relay",
+    "zh": "沙漠接力",
+    "year": 2020,
+    "run": "1h 41m",
+    "genre": {
+     "en": "Adventure",
+     "zh": "冒险"
+    },
+    "q": "1080p",
+    "ov": {
+     "en": "Four runners carry a message across a desert where every phone has gone silent.",
+     "zh": "所有电话都失灵后，四名跑者接力把一封信送过沙漠。"
+    },
+    "p": null
+   },
+   "rain": {
+    "en": "Rain on Glass",
+    "zh": "雨窗",
+    "year": 2019,
+    "run": "1h 33m",
+    "genre": {
+     "en": "Romance",
+     "zh": "爱情"
+    },
+    "q": "1080p",
+    "ov": {
+     "en": "Two neighbours who have never met share a window, a rainy season and a playlist.",
+     "zh": "从未谋面的两位邻居，隔着一扇窗共享了一个雨季和一张歌单。"
+    },
+    "p": null
+   },
+   "kite": {
+    "en": "Kite Season",
+    "zh": "风筝季",
+    "year": 2024,
+    "run": "1h 29m",
+    "genre": {
+     "en": "Comedy",
+     "zh": "喜剧"
+    },
+    "q": "4K",
+    "ov": {
+     "en": "A retired engineer enters the city kite festival with a kite that refuses to fly.",
+     "zh": "退休工程师带着一只怎么也飞不起来的风筝报名了城市风筝节。"
+    },
+    "p": null
+   },
+   "keepers": {
+    "en": "Lighthouse Keepers",
+    "zh": "守塔人",
+    "year": 2023,
+    "run": "Season 1 · 8 episodes",
+    "genre": {
+     "en": "Series",
+     "zh": "剧集"
+    },
+    "q": "4K",
+    "ov": {
+     "en": "Two keepers, one island, eight storms.",
+     "zh": "两位守塔人，一座岛，八场风暴。"
+    },
+    "p": 0.55
+   }
+  }
+ }
+}
