@@ -7,7 +7,7 @@ PRD `apps/home-cinema/prd.html` v4, feasibility `apps/home-cinema/feasibility.md
 
 ## Build
 - `export JAVA_HOME=~/.pico/primer-cli/jdk/jdk-21.0.13+9/Contents/Home && ./gradlew --offline assembleDebug testDebugUnitTest`
-- SDK BOM 6.1.9 (Volcengine maven), same gradle setup as qubic-tower. APK `app/build/outputs/apk/debug/app-debug.apk`, versionName 0.1.2.
+- SDK BOM 6.1.9 (Volcengine maven), standard PICO Spatial gradle setup. APK `app/build/outputs/apk/debug/app-debug.apk`, versionName 0.1.2.
 - Models: `design-tools/home-cinema_pack_glb.py <design glb> app/src/main/assets/models/frame_<style>.glb` (bakes
   emissive strength, PNG→JPEG, OPAQUE, cuts the linen backing open). Ambience: `design-tools/home-cinema_rain_loop2.py` (beton rain), `design-tools/home-cinema_amb_loop.py` (walnut room tone, linen fireplace, slats city night; sources in factory `apps/home-cinema/build/sound-sources.md`).
 
